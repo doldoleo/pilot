@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: pilot
+  name: openapi-common-ui
+  labels:
+    app: openapi-common-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openapi-common-ui
+  template:
+    metadata:
+      labels:
+        app: openapi-common-ui
+    spec:
+      containers:
+      - name: openapi-common-ui
+        image: doldoleo/userapp:2.0
+        ports:
+        - containerPort: 8080

@@ -22,7 +22,7 @@ podTemplate(
         stage("git") {
              agent any
 		     steps {
-		       git branch: 'main', url: 'https://github.com/doldole/source-maven-java-spring-hello-webapp.git'
+		       git branch: 'master', url: 'https://github.com/doldoleo/pilot.git'
 		     }
         }
 
