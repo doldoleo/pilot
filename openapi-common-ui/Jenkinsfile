@@ -1,21 +1,14 @@
-podTemplate(label: 'docker-build', 
-  containers: [
-    containerTemplate(
-      name: 'git',
-      image: 'alpine/git',
-      command: 'cat',
-      ttyEnabled: true
-    ),
-    containerTemplate(
-      name: 'docker',
-      image: 'docker',
-      command: 'cat',
-      ttyEnabled: true
-    ),
-  ],
-  volumes: [ 
-    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'), 
-  ]
+// https://github.com/jenkinsci/kubernetes-plugin
+podTemplate(
+    name: "jenkins-slave",
+    serviceAccount: "jenkins",
+    label: 'docker-build', 
+    containers: [
+        containerTemplate(name: "docker", image: "docker", ttyEnabled: true, command: 'cat')
+    ],
+    volumes: [
+        hostPathVolume(mountPath: "/var/run/docker.sock", hostPath: "/var/run/docker.sock")
+    ]
 ) {
     node('docker-build') {
         def now = java.time.LocalDateTime.now()
@@ -46,6 +39,5 @@ podTemplate(label: 'docker-build',
                 }
             }
         }
-
     }
 }
