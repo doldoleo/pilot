@@ -1,29 +1,26 @@
-// https://github.com/jenkinsci/kubernetes-plugin
 podTemplate(
     name: "jenkins-slave",
     serviceAccount: "jenkins",
     containers: [
-        containerTemplate(name: "docker", image: "docker", ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: "kubectl", image: "lachlanevenson/k8s-kubectl:v1.17.5", ttyEnabled: true, command: 'cat')
+        containerTemplate(name: "docker", image: "docker", ttyEnabled: true, command: 'cat')
     ],
     volumes: [
         hostPathVolume(mountPath: "/var/run/docker.sock", hostPath: "/var/run/docker.sock")
     ]
 ) {
-    node(POD_LABEL) {
+    node('docker-build') {
         def now = java.time.LocalDateTime.now()
-        def projectId = "commonui" // 프로젝트 아이디
+        def projectId = "openapi-common-ui" // 프로젝트 아이디
 
         // docker
         def dockerhubCredentialsId = "doldoleo" // 젠킨스 도커허브 자격증명
-        def dockerImage = "swagger/pilot-${projectId}" // 도커허브 이미지
+        def dockerImage = "${dockerhubCredentialsId}/${projectId}" // 도커허브 이미지
         def dockerImageTag = "latest" // 도커허브 이미지 태그
 
-        stage("git") {
-             agent any
-		     steps {
-		       git branch: 'master', url: 'https://github.com/doldoleo/pilot.git'
-		     }
+        stage('Checkout'){
+            container('git'){
+                checkout scm
+            }
         }
 
         stage("gradle") {
@@ -31,7 +28,9 @@ podTemplate(
             sh "./gradlew bootJar"
         }
 
-        stage("docker") {
+       
+        
+        stage("buildImage") {
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
                     sh "docker login -u $username -p $password"
@@ -41,11 +40,5 @@ podTemplate(
             }
         }
 
-        stage( "kubernetes" ) {
-            container("kubectl") {
-                sh "kubectl rollout restart deployment ${projectId}-deployment"
-                sh "kubectl annotate deployment.apps/${projectId}-deployment kubernetes.io/change-cause='Image updated at ${now} by ${env.BUILD_TAG}.'"
-            }
-        }
     }
 }

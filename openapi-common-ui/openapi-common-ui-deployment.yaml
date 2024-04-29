@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: openapi-common-ui
-        image: doldoleo/userapp:2.0
+        image: doldoleo/openapi-common-ui:latest
         ports:
         - containerPort: 8080
