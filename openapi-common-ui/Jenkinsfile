@@ -1,12 +1,21 @@
-podTemplate(
-    name: "jenkins-slave",
-    serviceAccount: "jenkins",
-    containers: [
-        containerTemplate(name: "docker", image: "docker", ttyEnabled: true, command: 'cat')
-    ],
-    volumes: [
-        hostPathVolume(mountPath: "/var/run/docker.sock", hostPath: "/var/run/docker.sock")
-    ]
+podTemplate(label: 'docker-build', 
+  containers: [
+    containerTemplate(
+      name: 'git',
+      image: 'alpine/git',
+      command: 'cat',
+      ttyEnabled: true
+    ),
+    containerTemplate(
+      name: 'docker',
+      image: 'docker',
+      command: 'cat',
+      ttyEnabled: true
+    ),
+  ],
+  volumes: [ 
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'), 
+  ]
 ) {
     node('docker-build') {
         def now = java.time.LocalDateTime.now()
@@ -22,14 +31,12 @@ podTemplate(
                 checkout scm
             }
         }
-
+        
         stage("gradle") {
             sh "./gradlew wrap --gradle-version=7.3 --daemon"
             sh "./gradlew bootJar"
         }
-
-       
-        
+    
         stage("buildImage") {
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
