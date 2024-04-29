@@ -1,0 +1,11 @@
+spring:
+  main:
+    banner-mode: 'off'
+
+springdoc:
+  swagger-ui:
+    path: /
+
+logging:
+  level:
+    root: INFO
