@@ -1,8 +1,9 @@
 // https://github.com/jenkinsci/kubernetes-plugin
 podTemplate(
+   label: "docker-build", 
     name: "jenkins-slave",
     serviceAccount: "jenkins",
-    label: 'docker-build', 
+   
     containers: [
         containerTemplate(name: "docker", image: "docker", ttyEnabled: true, command: 'cat')
     ],
