@@ -27,7 +27,8 @@ podTemplate(
         }
         
         stage('Gradle Build') {
-            sh 'ls -al'
+            sh 'cd openapi-common-ui'
+            sh 'ls'
         	sh 'chmod 755 gradlew'
         	sh ' ./gradlew clean bootjar'
         	sh 'mv build/libs/*.jar app.jar'
