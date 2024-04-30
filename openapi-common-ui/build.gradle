@@ -31,8 +31,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	
-	compileOnly 'org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8'
-	compileOnly 'org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-config'
+	implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8'
+	implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-config'
 }
 
 dependencyManagement {
