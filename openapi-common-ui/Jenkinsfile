@@ -20,13 +20,13 @@ podTemplate(
         def dockerImage = "${dockerhubCredentialsId}/${projectId}" // 도커허브 이미지
         def dockerImageTag = "latest" // 도커허브 이미지 태그
 
-        stage('Checkout'){
+        stage('checkout'){
             container('git'){
                 checkout scm
             }
         }
         
-        stage("gradle") {
+        stage('Gradle Build') {
             steps {
                 sh '''
                     chmod 755 gradlew
