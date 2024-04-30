@@ -30,7 +30,9 @@ public class SwaggerController {
 	        String url = new URI(uri.getScheme(), uri.getAuthority(), null, null, null).toString();
 	        Map<String, Object> swaggerConfig = new LinkedHashMap<>();
 	        List<org.springdoc.core.AbstractSwaggerUiConfigProperties.SwaggerUrl> swaggerUrls = new LinkedList<>();
+	        
 	        System.out.println("Services = " + discoveryClient.getServices());
+	        
 	        discoveryClient.getServices().stream().filter(s -> !KUBE_SERVICES.contains(s)).forEach(serviceName ->
 	                        swaggerUrls.add(new org.springdoc.core.AbstractSwaggerUiConfigProperties.SwaggerUrl(serviceName,
 	                                url + "/" + serviceName + "/v3/api-docs")));
