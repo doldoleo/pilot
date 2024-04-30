@@ -38,7 +38,7 @@ podTemplate(
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
                     sh "docker login -u $username -p $password"
-                    sh "docker build -f ./openapi-common-ui/Dockerfile -t ${dockerImage}:${dockerImageTag} ."
+                    sh "cd openapi-common-ui;docker build -f Dockerfile -t ${dockerImage}:${dockerImageTag} ./"
                     sh "docker push ${dockerImage}:${dockerImageTag}"
                 }
             }
