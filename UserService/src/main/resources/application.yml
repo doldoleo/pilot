@@ -16,7 +16,7 @@ eureka:
       register-with-eureka: true    
       fetch-registry: true    
       serviceUrl:      
-         defaultZone: https://admin:admin@192.168.0.101:30443/eureka-proxy/eureka/ #http://admin:admin@192.168.0.101:30040/eureka/
+         defaultZone: http://admin:admin@192.168.0.101:31999/eureka-proxy/eureka/ #http://admin:admin@192.168.0.101:30040/eureka/
 
 info:
   app:
