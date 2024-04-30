@@ -1,3 +1,4 @@
 FROM openjdk:17-jdk-alpine
-WORKDIR /app/
+WORKDIR /app
+COPY ./app.jar ./app.jar
 CMD ["java", "-Dlogstash.url=logstash.elk.svc.cluster.local:5000", "-jar", "app.jar"]
