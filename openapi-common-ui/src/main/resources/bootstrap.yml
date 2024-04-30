@@ -14,9 +14,7 @@ spring:
             - Path=/user-service/**
           filters:
             - RewritePath=/user-service(?<segment>/?.*), $\{segment}
-eureka:
-  client:
-   serviceUrl: 
-      defaultZone: http://eureka.discovery:80/eureka/            
+
+                
 server:
   forward-headers-strategy: framework
