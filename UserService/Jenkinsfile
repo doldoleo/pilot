@@ -30,7 +30,7 @@ podTemplate(
             sh 'ls -al ./UserService'
         	sh 'chmod 755 ./UserService/gradlew'
         	sh 'cd UserService;./gradlew clean build' 
-        	sh 'mv ./UserService/build/libs/*.jar ./openapi-common-ui/app.jar'
+        	sh 'mv ./UserService/build/libs/*.jar ./UserService/app.jar'
         	sh 'ls -al'
         }
     
