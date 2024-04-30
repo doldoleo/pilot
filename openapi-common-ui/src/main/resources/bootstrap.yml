@@ -14,10 +14,5 @@ spring:
             - Path=/user-service/**
           filters:
             - RewritePath=/user-service(?<segment>/?.*), $\{segment}
-# 개발 환경에서는 eureka client를 비활성화한다
-eureka:
-  client:
-    enabled: false
-    
 server:
   forward-headers-strategy: framework
