@@ -30,7 +30,7 @@ podTemplate(
             sh 'ls -al ./openapi-common-ui'
         	sh 'chmod 755 ./openapi-common-ui/gradlew'
         	sh 'cd openapi-common-ui;./gradlew clean bootjar' 
-        	sh 'mv ./openapi-common-ui/build/libs/*.jar app.jar'
+        	sh 'mv ./openapi-common-ui/build/libs/*.jar ./openapi-common-ui/app.jar'
         	sh 'ls -al'
         }
     
@@ -38,7 +38,7 @@ podTemplate(
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
                     sh "docker login -u $username -p $password"
-                    sh "cd openapi-common-ui;docker build -f Dockerfile -t ${dockerImage}:${dockerImageTag} ./"
+                    sh "docker build -f ./openapi-common-ui/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ./"
                     sh "docker push ${dockerImage}:${dockerImageTag}"
                 }
             }
