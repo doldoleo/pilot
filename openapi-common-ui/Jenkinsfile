@@ -16,8 +16,8 @@ podTemplate(
         def projectId = "openapi-common-ui" // 프로젝트 아이디
 
         // docker
-        def dockerhubCredentialsId = "doldoleo" // 젠킨스 도커허브 자격증명
-        def dockerImage = "${dockerhubCredentialsId}/${projectId}" // 도커허브 이미지
+        def dockerhubCredentialsId = "DOCKER_HUB" // 젠킨스 도커허브 자격증명
+        def dockerImage = "doldoleo/${projectId}" // 도커허브 이미지
         def dockerImageTag = "latest" // 도커허브 이미지 태그
 
         stage('checkout'){
@@ -38,7 +38,7 @@ podTemplate(
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
                     sh "docker login -u $username -p $password"
-                    sh "docker build -f DockerfileK8s -t ${dockerImage}:${dockerImageTag} ."
+                    sh "docker build -f ./openapi-common-ui/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ."
                     sh "docker push ${dockerImage}:${dockerImageTag}"
                 }
             }
