@@ -27,11 +27,17 @@ podTemplate(
         }
         
         stage("gradle") {
-            sh "./gradlew wrap --gradle-version=7.3 --daemon"
-            sh "./gradlew bootJar"
+            steps {
+                sh '''
+                    chmod 755 gradlew
+                    ./gradlew clean bootjar
+                    mv build/libs/*.jar app.jar
+                    ls -al
+                '''
+            }
         }
     
-        stage("buildImage") {
+        stage("docker") {
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
                     sh "docker login -u $username -p $password"
@@ -40,5 +46,6 @@ podTemplate(
                 }
             }
         }
+        
     }
 }
