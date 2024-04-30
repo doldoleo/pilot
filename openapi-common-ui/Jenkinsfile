@@ -27,7 +27,7 @@ podTemplate(
         }
         
         stage('Gradle Build') {
-            sh 'pwd'
+            sh 'ls -al'
         	sh 'chmod 755 gradlew'
         	sh ' ./gradlew clean bootjar'
         	sh 'mv build/libs/*.jar app.jar'
