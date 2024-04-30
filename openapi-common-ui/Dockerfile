@@ -1,5 +1,5 @@
 FROM openjdk:17-jdk-alpine
 ARG JARFILE=build/libs/*.jar
-WORKDIR /home/jenkins/agent/workspace/openapi-common-ui
+WORKDIR /tmp
 COPY ${JARFILE} app.jar
 CMD ["java", "-Dlogstash.url=logstash.elk.svc.cluster.local:5000", "-jar", "app.jar"]
