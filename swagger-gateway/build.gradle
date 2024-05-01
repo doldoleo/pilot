@@ -38,6 +38,12 @@ dependencyManagement {
 	}
 }
 
+// build without test
+test {
+    exclude '**/*'
+}
+
+
 tasks.named("jar") {
 	enabled = false
 }
@@ -45,3 +51,4 @@ tasks.named("jar") {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

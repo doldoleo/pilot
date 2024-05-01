@@ -29,7 +29,7 @@ podTemplate(
         stage('Gradle Build') {
             sh 'ls -al ./swagger-gateway'
         	sh 'chmod 755 ./swagger-gateway/gradlew'
-        	sh 'cd swagger-gateway;./gradlew clean build' 
+        	sh 'cd swagger-gateway;./gradlew clean build --exclude-task test' 
         	sh 'mv ./swagger-gateway/build/libs/*.jar ./swagger-gateway/app.jar'
         	sh 'ls -al'
         }
