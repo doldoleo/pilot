@@ -13,7 +13,7 @@ podTemplate(
 ) {
     node('docker-build') {
         def now = java.time.LocalDateTime.now()
-        def projectId = "payment-service" // 프로젝트 아이디
+        def projectId = "swagger-gateway" // 프로젝트 아이디
 
         // docker
         def dockerhubCredentialsId = "DOCKER_HUB" // 젠킨스 도커허브 자격증명
@@ -27,10 +27,10 @@ podTemplate(
         }
         
         stage('Gradle Build') {
-            sh 'ls -al ./PaymentService'
-        	sh 'chmod 755 ./PaymentService/gradlew'
-        	sh 'cd PaymentService;./gradlew clean build' 
-        	sh 'mv ./PaymentService/build/libs/*.jar ./PaymentService/app.jar'
+            sh 'ls -al ./swagger-gateway'
+        	sh 'chmod 755 ./swagger-gateway/gradlew'
+        	sh 'cd swagger-gateway;./gradlew clean build' 
+        	sh 'mv ./swagger-gateway/build/libs/*.jar ./swagger-gateway/app.jar'
         	sh 'ls -al'
         }
     
@@ -38,7 +38,7 @@ podTemplate(
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
                     sh "docker login -u $username -p $password"
-                    sh "docker build -f ./PaymentService/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ./"
+                    sh "docker build -f ./swagger-gateway/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ./"
                     sh "docker push ${dockerImage}:${dockerImageTag}"
                 }
             }

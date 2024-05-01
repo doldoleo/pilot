@@ -1,0 +1,81 @@
+server:
+  port: 9999
+
+eureka:  
+   instance:    
+      prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
+      instance-id:  ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+      lease-renewal-interval-in-seconds: 5 # 디스커버리한테 1초마다 하트비트 전송
+   client:    
+      registryFetchIntervalSeconds: 5    #유레카 서버에게 서비스 정보를 가져오는 주기
+      disable-delta: true    #유레카 서버에게 서비스 정보를 가져올 때 변경된 내용만 가지고 올지에 대한 여부
+      register-with-eureka: true    
+      fetch-registry: true    
+      serviceUrl:      
+         defaultZone: http://admin:admin@localhost:8761/eureka/
+spring:
+  application:
+    name: swagger-gateway #MSA에서 해당 서비스를 구별할 수 있는 고유한 ID
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: '*'
+            allowedHeaders: '*'
+            allowedMethods: # 메서드를 명시하지 않으면 안되는 경우도 있기 때문에 메서드는 명시해주는 편이 좋다고 한다.
+            - PUT
+            - GET
+            - POST
+            - DELETE
+            - OPTIONSS
+      routes: #라우팅 규칙 목록 설정
+        - id : user-service
+          uri: lb://USER-SERVICE #http://localhost:8000 OR lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/v1/api-docs/**
+            - Method=GET
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods: '*'
+              allowedHeaders: '*'
+              maxAge: 30
+          filters:
+            - RewritePath=/api/v1/user-service/(?<path>.*), /$\{path}
+        - id : payment-service
+          uri: lb://PAYMENT-SERVICE #http://localhost:8000 OR lb://USER-SERVICE
+          predicates:
+            - Path=/payment-service/v1/api-docs/**
+            - Method=GET
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods: '*'
+              allowedHeaders: '*'
+              maxAge: 30
+          filters:
+            - RewritePath=/api/v1/payment-service/(?<path>.*), /$\{path}            
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+          
+  endpoint:
+    gateway:
+      enabled: true  # default: true    
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    use-root-path: true
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+       - url: /user-service/v1/api-docs
+         name: 회원 서비스  
+    urls-primary-name: Gateway         

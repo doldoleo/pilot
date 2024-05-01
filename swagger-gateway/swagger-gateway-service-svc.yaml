@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: swagger-gateway
+  labels:
+    app: swagger-gateway
+spec:
+  selector:
+    app: swagger-gateway
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9999

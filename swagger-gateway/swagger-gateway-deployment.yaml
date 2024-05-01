@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swagger-gateway
+  namespace: pilot
+  labels:
+    app: swagger-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swagger-gateway
+  template:
+    metadata:
+      labels:
+        app: swagger-gateway
+    spec:
+      containers:
+      - name: swagger-gateway
+        image: doldoleo/swagger-gateway:latest
+        ports:
+        - containerPort: 9999
