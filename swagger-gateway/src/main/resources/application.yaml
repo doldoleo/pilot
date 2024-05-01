@@ -32,7 +32,7 @@ spring:
             - OPTIONSS
       routes: #라우팅 규칙 목록 설정
         - id : user-service
-          uri: http://user-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
+          uri: lb://USER-SERVICE #http://user-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
             - Path=/user-service/v1/api-docs/**
             - Method=GET
@@ -80,4 +80,4 @@ springdoc:
          name: 회원 서비스  
        - url: http://swagger-gateway.pilot/v1/api-docs
          name: 지급결재 서비스  
-    urls-primary-name: Gateway         
+    urls-primary-name: Gateway  
