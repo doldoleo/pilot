@@ -32,7 +32,7 @@ spring:
             - OPTIONSS
       routes: #라우팅 규칙 목록 설정
         - id : user-service
-          uri: lb://USER-SERVICE #http://localhost:8000 OR lb://USER-SERVICE
+          uri: http://user-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
             - Path=/user-service/v1/api-docs/**
             - Method=GET
@@ -45,7 +45,7 @@ spring:
           filters:
             - RewritePath=/api/v1/user-service/(?<path>.*), /$\{path}
         - id : payment-service
-          uri: lb://PAYMENT-SERVICE #http://localhost:8000 OR lb://USER-SERVICE
+          uri: http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
             - Path=/payment-service/v1/api-docs/**
             - Method=GET
