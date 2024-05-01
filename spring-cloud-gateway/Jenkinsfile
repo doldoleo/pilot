@@ -1,0 +1,47 @@
+podTemplate(
+   label: "docker-build", 
+    name: "jenkins-slave",
+    serviceAccount: "jenkins",
+   
+    containers: [
+        containerTemplate(name: "docker", image: "docker", ttyEnabled: true, command: 'cat')
+    ],
+    volumes: [
+        hostPathVolume(mountPath: "/var/run/docker.sock", hostPath: "/var/run/docker.sock")
+    ]
+) {
+    node('docker-build') {
+        def now = java.time.LocalDateTime.now()
+        def projectId = "spring-cloud-gateway" // 프로젝트 아이디
+
+        // docker
+        def dockerhubCredentialsId = "DOCKER_HUB" // 젠킨스 도커허브 자격증명
+        def dockerImage = "doldoleo/${projectId}" // 도커허브 이미지
+        def dockerImageTag = "latest" // 도커허브 이미지 태그
+
+        stage('checkout'){
+            container('git'){
+                checkout scm
+            }
+        }
+        
+        stage('Gradle Build') {
+            sh 'ls -al ./spring-cloud-gateway'
+        	sh 'chmod 755 ./spring-cloud-gateway/gradlew'
+        	sh 'cd spring-cloud-gateway;./gradlew clean build' 
+        	sh 'mv ./spring-cloud-gateway/build/libs/*.jar ./spring-cloud-gateway/app.jar'
+        	sh 'ls -al'
+        }
+    
+        stage("docker") {
+            container("docker") {
+                withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
+                    sh "docker login -u $username -p $password"
+                    sh "docker build -f ./spring-cloud-gateway/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ./"
+                    sh "docker push ${dockerImage}:${dockerImageTag}"
+                }
+            }
+        }
+        
+    }
+}

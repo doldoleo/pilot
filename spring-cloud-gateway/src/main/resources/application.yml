@@ -1,0 +1,72 @@
+server:
+  port: 9000
+
+eureka:  
+   instance:    
+      prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
+      instance-id:  ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+      lease-renewal-interval-in-seconds: 5 # 디스커버리한테 1초마다 하트비트 전송
+   client:    
+      registryFetchIntervalSeconds: 5    #유레카 서버에게 서비스 정보를 가져오는 주기
+      disable-delta: true    #유레카 서버에게 서비스 정보를 가져올 때 변경된 내용만 가지고 올지에 대한 여부
+      register-with-eureka: true    
+      fetch-registry: true    
+      serviceUrl:      
+         defaultZone: http://admin:admin@192.168.0.101:31815/eureka/
+spring:
+  application:
+    name: spring-cloud-gateway #MSA에서 해당 서비스를 구별할 수 있는 고유한 ID
+  cloud:
+    gateway:
+      default-filters: # 전역 필터 설정 (모든 라우터 목록들에 대해서 해당 필터 적용)
+        - name : GlobalFilter #전역 필터 클래스 이름
+          args: #  필터에 전달되는 추가 인수 설정
+            baseMessage : Spring Cloud Gateway GlobalFilter
+            preLogger : true
+            postLogger : true
+      routes: #라우팅 규칙 목록 설정
+        - id : payment-service
+          uri:  lb://PAYMENT-SERVICE # lb://SECONDSERVICE #Eureka에 등록된 서비스 이름 지정 Spring Cloud Gateway에서는 Eureka에 등록된 서비스를 검색하고, Load Balancer는 Eureka에서 처리한다.
+          predicates:
+            - Path=/payment-service/**
+            - Method=GET
+          filters:
+            - AddRequestHeader=first-request, first-request-header2 #요청 헤더 추가 필터 적용
+            - AddResponseHeader=first-response, first-response-header2 #응답 헤더 추가 필터 적용
+            - CustomFilter 
+        - id : user-service
+          uri: lb://USER-SERVICE #http://localhost:8000 OR lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - CustomFilter
+            #- RewritePath=/second-service/(?<segment>.*), /$\{segment}
+            # :8000/second-service/posts로 gateway에 요청이 와서 second-service로 라우팅을 할 때, 실제 second-service에서는 :60000/second-service/posts로 대기해야 요청을 처리할 수 있다.
+            # - @GET("/second-service/posts") 와 같이
+            
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+          
+  endpoint:
+    gateway:
+      enabled: true  # default: true     
+      
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3_MULTI
+    enabled: true
+  zipkin:
+    tracing:
+       endpoint: http://192.168.0.101:9411/api/v2/spans       
+
+logging:
+   pattern:
+      level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+   level:
+    zipkin2: DEBUG        
