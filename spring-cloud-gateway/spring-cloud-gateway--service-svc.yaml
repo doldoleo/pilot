@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     app: scg
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
