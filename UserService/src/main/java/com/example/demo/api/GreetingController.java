@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "사용자 서비스 V1", description = "사용자 관련 API(기본)")
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/user-service")
+@RequestMapping("/api/v1/user-service")
 @RestController
 public class GreetingController {
 	private static final String template = "Hello, %s!";

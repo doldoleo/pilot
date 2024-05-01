@@ -3,6 +3,9 @@ package egov.common.swagger;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -20,7 +23,7 @@ public class SwaggerConfig {
 		// "/user-service/**" 경로에 매칭되는 API를 'user'으로 그룹화하여 문서화한다. http://localhost/user-service/api-docs/user 으로 API 목록을 가져올수 있다
 	        return GroupedOpenApi
 	            .builder()
-	            .group("user")
+	            .group("회원서비스")
 	            .pathsToMatch("/user-service/**")
 	            .build();
 
