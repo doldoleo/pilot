@@ -1,4 +1,0 @@
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-COPY ./openapi-common-ui/app.jar ./
-CMD ["java", "-Dlogstash.url=logstash.elk.svc.cluster.local:5000", "-jar", "app.jar"]
