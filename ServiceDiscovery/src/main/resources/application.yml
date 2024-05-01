@@ -1,0 +1,38 @@
+server:
+   port: 8761
+
+spring:
+  application:
+    name: eureka
+  security:
+    user:
+      name: admin
+      password: admin
+
+# eureka 가 포함되면 eureka server 도 등록되므로 해제한다.
+eureka:
+  client:
+    register-with-eureka: false #유레카 서비스에 등록 여부
+    fetch-registry: false #레지스트리 정보 캐싱 여부
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname:localhost}:8761/eureka
+  server:
+    enable-self-preservation: true #네트워크 장애가 발생하여 서비스와 통신이 되지 않아도 해당 서비스를 해제되는 것을 방지하는 모드 (운영 환경에서는 활성화, 개발시에는 비활성화)
+    peer-node-read-timeout-ms: 10000
+  instance:
+    lease-expiration-duration-in-seconds: 90 #디스커버리는 서비스 등록 해제 하기 전에 마지막 하트비트에서부터 90초 기다림  
+
+#logging
+
+#logging:
+ #  level:
+  #   com:
+   #    netflix:
+    #     eureka: OFF
+     #    discovery: OFF
+
+
+#spring.jackson.serialization.indent-output=true
+# management.endpoints.web.exposure.include=health,info,beans         
+
+    

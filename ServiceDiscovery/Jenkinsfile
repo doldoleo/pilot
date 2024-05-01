@@ -12,7 +12,7 @@ podTemplate(
 ) {
     node('docker-build') {
         def now = java.time.LocalDateTime.now()
-        def projectId = "user-service" // 프로젝트 아이디
+        def projectId = "eureka" // 프로젝트 아이디
 
         // docker
         def dockerhubCredentialsId = "DOCKER_HUB" // 젠킨스 도커허브 자격증명
@@ -26,10 +26,10 @@ podTemplate(
         }
         
         stage('Gradle Build') {
-            sh 'ls -al ./UserService'
-        	sh 'chmod 755 ./UserService/gradlew'
-        	sh 'cd UserService;./gradlew clean build' 
-        	sh 'mv ./UserService/build/libs/*.jar ./UserService/app.jar'
+            sh 'ls -al ./ServiceDiscovery'
+        	sh 'chmod 755 ./ServiceDiscovery/gradlew'
+        	sh 'cd ServiceDiscovery;./gradlew clean build' 
+        	sh 'mv ./ServiceDiscovery/build/libs/*.jar ./ServiceDiscovery/app.jar'
         	sh 'ls -al'
         }
     
@@ -37,7 +37,7 @@ podTemplate(
             container("docker") {
                 withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
                     sh "docker login -u $username -p $password"
-                    sh "docker build -f ./UserService/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ./"
+                    sh "docker build -f ./ServiceDiscovery/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ./"
                     sh "docker push ${dockerImage}:${dockerImageTag}"
                 }
             }

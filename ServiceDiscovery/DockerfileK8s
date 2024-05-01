@@ -1,0 +1,4 @@
+FROM openjdk:8-jre-alpine
+WORKDIR /app
+COPY ./ServiceDiscovery/app.jar ./
+CMD ["java", "-Dlogstash.url=logstash.elk.svc.cluster.local:5000", "-jar", "app.jar"]
