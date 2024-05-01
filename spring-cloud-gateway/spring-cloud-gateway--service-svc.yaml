@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: pilot
+  name: scg
+  labels:
+    app: scg
+spec:
+  selector:
+    app: scg
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9000
+      nodePort: 30060
+

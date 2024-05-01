@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scg
+  namespace: pilot
+  labels:
+    app: scg
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: scg
+  template:
+    metadata:
+      labels:
+        app: scg
+    spec:
+      containers:
+      - name: scg
+        image: doldoleo/spring-cloud-gateway:laetst
+        ports:
+        - containerPort: 9000
