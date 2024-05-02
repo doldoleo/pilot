@@ -16,6 +16,8 @@ eureka:
 spring:
   application:
     name: swagger-gateway #MSA에서 해당 서비스를 구별할 수 있는 고유한 ID
+  main:
+    web-application-type: reactive    
   cloud:
     gateway:
       globalcors:
@@ -73,7 +75,7 @@ springdoc:
   swagger-ui:
     use-root-path: true
     enabled: true
-    path: /swagger-ui.html
+    path: /swagger-ui/index.html
     config-url: /v3/api-docs/swagger-config
     urls:
        - url: /payment-service/v1/api-docs
