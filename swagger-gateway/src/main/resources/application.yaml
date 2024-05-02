@@ -76,8 +76,8 @@ springdoc:
     path: /swagger-ui.html
     config-url: /v3/api-docs/swagger-config
     urls:
-       - url: http://swagger-gateway.pilot/user-service/v1/api-docs
-         name: 회원 서비스  
-       - url: http://swagger-gateway.pilot/payment-service/v1/api-docs
+       - url: /payment-service/v1/api-docs
          name: 지급결재 서비스  
+       - url: /user-service/v1/api-docs
+         name: 회원 서비스  
     urls-primary-name: Gateway  
