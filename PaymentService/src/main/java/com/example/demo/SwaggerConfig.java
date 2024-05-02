@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import lombok.RequiredArgsConstructor;
 
 @OpenAPIDefinition(
-        info = @Info(title = "Payment-Service API 명세서",
+        info = @Info(title = "지급결재 API 명세서",
                 description = "파일럿을 위한 결제 샘플 서비스 API 명세서",
                 version = "v1"))
 @RequiredArgsConstructor
