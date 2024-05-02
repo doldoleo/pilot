@@ -37,7 +37,6 @@ spring:
           uri: http://user-service.pilot #http://user-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
             - Path=/user-service/v1/api-docs/**
-            - Method=GET
           metadata:
             cors:
               allowedOrigins: '*'
