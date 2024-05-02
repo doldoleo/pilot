@@ -56,7 +56,7 @@ management:
   endpoint:
     gateway:
       enabled: true  # default: true    
-
+ 
 springdoc:
   api-docs:
     enabled: true
