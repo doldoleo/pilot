@@ -3,7 +3,6 @@ package com.example.demo.api;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,13 +34,4 @@ public class GreetingController {
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
 	}
 	
-	@Operation(summary = "사용자 등록", 
-			   description = "사용자 정보를 등록합니다.", 
-			   responses = {
-			                 @ApiResponse(responseCode = "200", description = "등록결과를 반환함.") 
-			                 })
-	@PostMapping("/register")
-	public void register() {
-		log.info("user-service register");
-	}
 }
