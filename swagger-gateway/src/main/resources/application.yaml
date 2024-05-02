@@ -36,7 +36,7 @@ spring:
         - id : payment-service
           uri: http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
-            - Path=/api/v1/payment-service/**
+            - Path=/api/payments/v1/api-docs/**
             - Method=GET,POST,PUT,DELETE,OPTIONS
           filters:
             - RewritePath=/api/payments/(?<path>.*), /$\{path}
@@ -66,7 +66,7 @@ springdoc:
     #path: /swagger-ui/index.html
     config-url: /v3/api-docs/swagger-config
     urls:
-       - url: /payment-service/v1/api-docs
+       - url: /api/payment/v1/api-docs
          name: 지급결재 서비스  
        - url: /user-service/v1/api-docs
          name: 회원 서비스  
