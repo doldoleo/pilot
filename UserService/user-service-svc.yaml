@@ -7,8 +7,9 @@ metadata:
 spec:
   selector:
     app: user-service
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8082
+      nodePort: 31111
