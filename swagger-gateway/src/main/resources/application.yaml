@@ -36,10 +36,10 @@ spring:
         - id : payment-service
           uri: http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
-            - Path=/api/payments/v1/api-docs/**
+            - Path=/api/payment/v1/api-docs/**
             - Method=GET,POST,PUT,DELETE,OPTIONS
           filters:
-            - RewritePath=/api/payments/(?<path>.*), /$\{path}
+            - RewritePath=/api/payment/(?<path>.*), /$\{path}
           metadata:
             cors:
               allowedOrigins: '*'
