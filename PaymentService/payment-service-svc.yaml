@@ -7,8 +7,9 @@ metadata:
 spec:
   selector:
     app: payment-service
-  type: ClusterIP
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8081
+      nodePort: 301010
