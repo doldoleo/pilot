@@ -11,4 +11,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 30501
+      targetPort: 8082
+      nodePort: 30501
