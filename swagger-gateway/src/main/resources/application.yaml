@@ -57,7 +57,21 @@ spring:
               allowedHeaders: '*'
               maxAge: 30
           filters:
-            - RewritePath=/api/v1/payment-service/(?<path>.*), /$\{path}            
+            - RewritePath=/api/v1/payment-service/(?<path>.*), /$\{path}   
+        - id : payment-service2
+          uri: http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/payment-service/**
+            - Method=GET
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods: '*'
+              allowedHeaders: '*'
+              maxAge: 30
+          filters:
+            - RewritePath=/api/v1/payment-service/(?<path>.*), /$\{path}
+                      
 management:
   endpoints:
     web:
