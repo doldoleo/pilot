@@ -57,7 +57,7 @@ management:
 # HTML 형식의 swagger 문서의 사용자 경로 지정
 springdoc:
   api-docs:
-    path: /payment-service/v1/api-docs # 전체 API 정보를 가져오는 REST API
+    path: /api/payment/v1/api-docs # 전체 API 정보를 가져오는 REST API
   packages-to-scan: com.example.demo   #api가 정의된 package 검색경로
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8  
@@ -66,7 +66,7 @@ springdoc:
     tags-sorter: alpha # 태그를 알파벳 순으로 정렬
     groups-order: DESC # path, query, body, response 순으로 출력
     disable-swagger-default-url: true
-    path: /payment-service/swagger-ui.html  # swagger-ui 접근 경로에 대한 별칭, 해당 주소로 접속해도 http://localhost:8080/swagger-ui/index.html로 리다이렉션 됨.
+    #path: /payment-service/swagger-ui.html  # swagger-ui 접근 경로에 대한 별칭, 해당 주소로 접속해도 http://localhost:8080/swagger-ui/index.html로 리다이렉션 됨.
     doc-expansion: none  
   paths-to-match:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴                 

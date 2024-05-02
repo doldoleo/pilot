@@ -37,7 +37,9 @@ spring:
           uri: http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
             - Path=/api/v1/payment-service/**
-             - Method=GET,POST,PUT,DELETE,OPTIONS
+            - Method=GET,POST,PUT,DELETE,OPTIONS
+          filters:
+            - RewritePath=/api/payments/(?<path>.*), /$\{path}
           metadata:
             cors:
               allowedOrigins: '*'

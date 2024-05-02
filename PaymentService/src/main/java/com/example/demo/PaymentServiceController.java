@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "결재 서비스 V1", description = "결재 관련 API(기본)")
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/v1/payment-service")
+@RequestMapping("/api/payment/v1")
 @RestController
 public class PaymentServiceController {
 		
