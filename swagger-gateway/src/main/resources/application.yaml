@@ -10,29 +10,17 @@ spring:
     gateway:
       globalcors:
         add-to-simple-url-handler-mapping: true
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: '*'
-            allowedHeaders: '*'
-            allowedMethods: # 메서드를 명시하지 않으면 안되는 경우도 있기 때문에 메서드는 명시해주는 편이 좋다고 한다.
-            - PUT
-            - GET
-            - POST
-            - DELETE
-            - OPTIONSS
       routes: #라우팅 규칙 목록 설정
         - id : payment-service
-          uri: http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
+          uri: http://payment-service.pilot #http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
-            - Path=/api/payment/v1/api-docs/**
+            - Path=/api/v1/payment/**
             - Method=GET,POST,PUT,DELETE,OPTIONS
-          metadata:
-            cors:
-              allowedOrigins: '*'
-              allowedMethods: '*'
-              allowedHeaders: '*'
-              maxAge: 30
-                      
+        - id : user-service
+          uri: http://user-service.pilot #http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/user/**
+            - Method=GET,POST,PUT,DELETE,OPTIONS     
 management:
   endpoints:
     web:
@@ -52,8 +40,8 @@ springdoc:
     #path: /swagger-ui/index.html
     config-url: /v3/api-docs/swagger-config
     urls:
-       - url: /api/payment/v1/api-docs
+       - url: /api/v1/payment/api-docs
          name: 지급결재 서비스  
-       - url: /user-service/v1/api-docs
+       - url: /api/v1/user/api-docs
          name: 회원 서비스  
     urls-primary-name: Gateway  

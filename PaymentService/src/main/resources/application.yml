@@ -57,7 +57,7 @@ management:
 # HTML 형식의 swagger 문서의 사용자 경로 지정
 springdoc:
   api-docs:
-    path: /api/payment/v1/api-docs # 전체 API 정보를 가져오는 REST API
+    path: /api/v1/payment/api-docs # 전체 API 정보를 가져오는 REST API
   packages-to-scan: com.example.demo   #api가 정의된 package 검색경로
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8  
