@@ -53,7 +53,7 @@ management:
   zipkin:
     tracing:
        endpoint: http://192.168.0.101:30411/api/v2/spans  
-
+ 
 # HTML 형식의 swagger 문서의 사용자 경로 지정
 springdoc:
   api-docs:
