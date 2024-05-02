@@ -13,4 +13,5 @@ spec:
       port: 80
       targetPort: 9999
 status:
-  loadBalancer: {10.98.245.77}
+  loadBalancer: 
+     ingress: 10.98.245.77
