@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: local    # 기본적으로 활성화할 profile을 local로 설정 
+    group:
+      local:  # local, common profile을 그룹지어 함께 어플리케이션 구동    
+        - common
+      dev:   # dev, common profile을 그룹지어 함께 어플리케이션 구동  
+        - common   

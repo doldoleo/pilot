@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feign-service
+  namespace: pilot
+  labels:
+    app: feign-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feign-service
+  template:
+    metadata:
+      labels:
+        app: feign-service
+    spec:
+      containers:
+      - name: feign-service
+        image: doldoleo/feign-service:latest
+        ports:
+        - containerPort: 9090
