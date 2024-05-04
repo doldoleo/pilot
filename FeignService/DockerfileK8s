@@ -1,4 +1,5 @@
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY ./FeignService/app.jar ./
-CMD ["java", "-Dlogstash.url=http://logstash.elk -Dspring.profiles.active=dev", "-jar", "app.jar"]
+ENV spring.profiles.active dev
+CMD ["java", "-Dlogstash.url=http://logstash.elk", "-jar", "app.jar"]
