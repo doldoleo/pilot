@@ -9,12 +9,12 @@ spring:
       client:
         config:
           user: # UserServiceOpenFeign.java 에서 선언된 feign client name
-            url: user-service.pilot.svc.cluster.local:5000
+            url: user-service.pilot.svc.cluster.local
             connectTimeout: 3000
             readTimeout: 3000
             loggerLevel: FULL
           payment:
-            url: http://user-service.pilot
+            url: payment-service.pilot.svc.cluster.local
             connectTimeout: 3000
             readTimeout: 3000
             loggerLevel: FULL
