@@ -7,7 +7,7 @@ metadata:
 spec:
   selector:
     app: swagger-gateway
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
