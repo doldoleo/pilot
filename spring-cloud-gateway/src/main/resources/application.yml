@@ -28,7 +28,12 @@ spring:
             - Path=/api/v1/user/**
           filters:
             - CustomFilter
-            
+        - id : feign-service
+          uri: http://feign-service.pilot #http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/merge/**
+          filters:
+            - CustomFilter  
 management:
   endpoints:
     web:
