@@ -20,7 +20,12 @@ spring:
           uri: http://user-service.pilot #http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
             - Path=/api/v1/user/**
-            - Method=GET,POST,PUT,DELETE,OPTIONS     
+            - Method=GET,POST,PUT,DELETE,OPTIONS    
+        - id : feign-service
+          uri: http://feign-service.pilot #http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/merge/**
+            - Method=GET,POST,PUT,DELETE,OPTIONS         
 management:
   endpoints:
     web:
@@ -44,4 +49,6 @@ springdoc:
          name: 지급결재 서비스  
        - url: /api/v1/user/api-docs
          name: 회원 서비스  
+       - url: /api/v1/merge/api-docs
+         name: 복합 서비스    
     urls-primary-name: Gateway  
