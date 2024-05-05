@@ -13,7 +13,7 @@ podTemplate(
 ) {
     node('docker-build') {
         def now = java.time.LocalDateTime.now()
-        def projectId = "LoggerService" // 프로젝트 아이디
+        def projectId = "logger-service" // 프로젝트 아이디
 
         // docker
         def dockerhubCredentialsId = "DOCKER_HUB" // 젠킨스 도커허브 자격증명
