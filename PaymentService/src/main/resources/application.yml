@@ -24,12 +24,6 @@ info:
     name: Payment Service
     description: 지결결재 서비스 제공
 
-logging:
-   pattern:
-      level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
-   level:
-    zipkin2: DEBUG
-        
 ##actuator 지정 (서비스 상태)    
 management:
   info:

@@ -12,8 +12,7 @@
         <root level="INFO">
             <appender-ref ref="STDOUT" />
         </root>
-        <logger name="feign.service" level="DEBUG"/>
-        <logger name="openfeign" level="DEBUG"/>
+        <logger name="com.example.demo" level="DEBUG"/>
     </springProfile>
     
     <springProfile name="dev">
@@ -82,6 +81,7 @@
             </encoder>
         </appender>
         <logger name="com.example.demo" level="DEBUG"/>
+        <logger name="zipkin2" level="DEBUG"/>
         <root level="INFO">
             <appender-ref ref="LOGSTASH" />
             <appender-ref ref="STDOUT" />

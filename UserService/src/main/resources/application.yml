@@ -4,6 +4,8 @@ server:
 spring:  
    application:   
       name: user-service 
+   profiles:
+      active: local 
       
 eureka:  
    instance:    
@@ -22,12 +24,6 @@ info:
   app:
     name: User Service
     description: 회원관리 서비스 제공
-
-logging:
-   pattern:
-      level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
-   level:
-    zipkin2: DEBUG
 
 # config server actuator
 management:
