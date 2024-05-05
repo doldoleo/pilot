@@ -8,19 +8,6 @@
         </encoder>
     </appender>
 
-    <appender name="FILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/order.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logger.%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>10</maxHistory>
-			<totalSizeCap>1GB</totalSizeCap>
-		</rollingPolicy>
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} %-5level %msg%n</pattern>
-		</encoder>
-	</appender>
-
     <!-- 로컬에서는 로그를 전송하지 않도록 설정 -->
     <springProfile name="local">
         <root level="INFO">
@@ -29,25 +16,33 @@
     </springProfile>
     <springProfile name="!local">
         <property name="destination" value="${logstash_hostname:-logstash.elk.svc.cluster.local:5000}" />
-        <property name="app_name" value="${app_name:-logging-service}" />
-
+        <property name="app_name" value="${spring.application.name:}" />
         <!-- ELK - Logstash 로 로그를 전송하기 위한 appender -->
         <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
             <destination>${destination}</destination>
             <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                 <providers>
                     <timestamp>
-						<timeZone>UTC</timeZone>
+						<fieldName>timestamp</fieldName>
+                        <timeZone>KST</timeZone>
 					</timestamp>
                     <mdc/>
                     <context/>
                     <logLevel/>
                     <loggerName/>
                     <pattern>
-                        <pattern>
-                            {"appName": "${app_name}"}
-                        </pattern>
-                        <pattern> { "timestamp": "@timestamp", "severity": "%level", "service": "${springAppName:-}", "trace": "%X{traceId:-}", "span": "%X{spanId:-}", "pid": "${PID:-}", "thread": "%thread", "class": "%logger{40}", "rest": "%message" } 
+                        <pattern> { "appName": "${app_name}", 
+                                     "type":"%X{type:-application}",
+                                    "timestamp": "@timestamp", 
+                                    "severity": "%level", 
+                                    "trace": "%X{traceId:-}", 
+                                    "span": "%X{spanId:-}", 
+                                    "pid": "${PID:-}", 
+                                    "thread": "%thread",
+                                    "class": "%logger{40}",
+                                    "message" : "%logger | %message %stacktrace{5,20,1024,rootFirst}"  ,
+                                    "stackTrace":"%ex{short}"
+                                  } 
                         </pattern>
                     </pattern>
                     <threadName/>
@@ -60,7 +55,6 @@
         <root level="INFO">
             <appender-ref ref="LOGSTASH" />
             <appender-ref ref="STDOUT" />
-            <appender-ref ref="FILE" />
         </root>
     </springProfile>
 
