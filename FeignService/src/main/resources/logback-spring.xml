@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <Configuration>
-
+ 	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <springProperty scope="context" name="springAppVersion" source="spring.application.version"/>
+    <contextName>${springAppName}</contextName>
+    
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta(%-4relative) - [%thread{10}, %X{traceId:-}, %X{spanId:-}] %cyan(%logger{20}): %msg%n</pattern>
@@ -16,43 +19,57 @@
     </springProfile>
     <springProfile name="!local">
         <property name="destination" value="${logstash_hostname:-logstash.elk.svc.cluster.local:5000}" />
-        <property name="app_name" value="${spring.application.name:}" />
         <!-- ELK - Logstash 로 로그를 전송하기 위한 appender -->
         <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
             <destination>${destination}</destination>
             <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                 <providers>
                     <timestamp>
-						<fieldName>timestamp</fieldName>
+						<fieldName>Timestamp/KST</fieldName>
                         <timeZone>KST</timeZone>
 					</timestamp>
-                    <mdc/>
-                    <context/>
-                    <logLevel/>
-                    <loggerName/>
-                    <pattern>
-                        <pattern> { "appName": "${app_name}", 
-                                     "type":"%X{type:-application}",
-                                    "timestamp": "@timestamp", 
-                                    "severity": "%level", 
+					<logLevel>
+						<fieldName>Level</fieldName>
+					</logLevel>
+					<threadName>
+                    	<fieldName>Thread</fieldName>
+                	</threadName>
+                	<contextName>
+                       <fieldName>ServiceName</fieldName>
+                    </contextName>
+                    <pattern> {  "ServiceVersion": "${springAppVersion}",
+                                    "ServiceHostName": "${hostname}",
+                                    "PID": "${PID:-}",
+                                    "type":"%X{type:-application}",
                                     "trace": "%X{traceId:-}", 
-                                    "span": "%X{spanId:-}", 
-                                    "pid": "${PID:-}", 
-                                    "thread": "%thread",
-                                    "class": "%logger{40}",
-                                    "message" : "%logger | %message %stacktrace{5,20,1024,rootFirst}"  ,
-                                    "stackTrace":"%ex{short}"
-                                  } 
-                        </pattern>
+                                    "span": "%X{spanId:-}"
+                               } 
                     </pattern>
-                    <threadName/>
-                    <message/>
+                    <mdc/>	
+                    <context/>
                     <logstashMarkers/>
-                    <stackTrace/>
+                    <loggerName>
+                    	<fieldName>Logger</fieldName>
+                	</loggerName>
+	                <callerData>
+	                    <classFieldName>Class</classFieldName>
+	                    <methodFieldName>Method</methodFieldName>
+	                    <fileFieldName>File</fileFieldName>
+	                    <lineFieldName>Line</lineFieldName>
+	                </callerData>
+	                <message>
+	                    <fieldName>Message</fieldName>
+	                </message>
+                    <throwableClassName>
+                    	<fieldName>ExceptionClass</fieldName>
+               		</throwableClassName>
+                	<stackTrace>
+                    	<fieldName>StackTrace</fieldName>
+                 	</stackTrace>   
                 </providers>
             </encoder>
         </appender>
-        <root level="INFO">
+        <root level="DEBUG">
             <appender-ref ref="LOGSTASH" />
             <appender-ref ref="STDOUT" />
         </root>
