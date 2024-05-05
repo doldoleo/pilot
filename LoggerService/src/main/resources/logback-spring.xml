@@ -23,6 +23,9 @@
             <destination>${destination}</destination>
             <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                 <providers>
+                    <timestamp>
+						<timeZone>UTC</timeZone>
+					</timestamp>
                     <mdc/>
                     <context/>
                     <logLevel/>
@@ -30,6 +33,8 @@
                     <pattern>
                         <pattern>
                             {"appName": "${app_name}"}
+                        </pattern>
+                        <pattern> { "timestamp": "@timestamp", "severity": "%level", "service": "${springAppName:-}", "trace": "%X{traceId:-}", "span": "%X{spanId:-}", "pid": "${PID:-}", "thread": "%thread", "class": "%logger{40}", "rest": "%message" } 
                         </pattern>
                     </pattern>
                     <threadName/>
