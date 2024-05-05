@@ -4,7 +4,9 @@ server:
 spring:
   application:
     name: payment-service
-
+  profiles:
+    active: local
+        
 eureka:  
    instance:    
       prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
@@ -17,8 +19,6 @@ eureka:
       fetch-registry: true    
       serviceUrl:      
          defaultZone: http://admin:admin@192.168.0.101:31815/eureka/ #http://admin:admin@192.168.0.101:31815/eureka/
-
-
 info:
   app:
     name: Payment Service
@@ -69,4 +69,5 @@ springdoc:
     #path: /payment-service/swagger-ui.html  # swagger-ui 접근 경로에 대한 별칭, 해당 주소로 접속해도 http://localhost:8080/swagger-ui/index.html로 리다이렉션 됨.
     doc-expansion: none  
   paths-to-match:
-    - /** # swagger-ui에 표시할 api의 엔드포인트 패턴                 
+    - /** # swagger-ui에 표시할 api의 엔드포인트 패턴      
+               
