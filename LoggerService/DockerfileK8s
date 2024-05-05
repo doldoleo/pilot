@@ -1,4 +1,5 @@
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY ./PaymentService/app.jar ./
+COPY ./LoggerService/app.jar ./
+ENV spring.profiles.active dev
 CMD ["java", "-Dlogstash.url=logstash.elk.svc.cluster.local:5000", "-jar", "app.jar"]

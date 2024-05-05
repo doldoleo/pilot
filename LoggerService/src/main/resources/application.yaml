@@ -1,0 +1,26 @@
+spring:
+  application:
+    name:
+       logger-service
+  profiles:
+    active: local    # 기본적으로 활성화할 profile을 local로 설정 
+
+server:
+  port: 8080  
+  
+#Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: threaddump, heapdump
+  endpoint:
+    health:
+      show-details: always
+---   
+spring:
+  config:
+    activate:
+      on-profile: local   # application-local.yaml 과 동일한 역할
+     
