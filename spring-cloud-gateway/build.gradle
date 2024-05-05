@@ -26,10 +26,15 @@ dependencies {
 	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
 	
+	implementation 'net.logstash.logback:logstash-logback-encoder:7.1.1'
 	compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+		
+	   // slf4j & logback
+	implementation('org.slf4j:jcl-over-slf4j')
+	implementation('ch.qos.logback:logback-classic')
 	
-
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
