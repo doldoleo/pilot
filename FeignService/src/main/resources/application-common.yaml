@@ -29,13 +29,14 @@ resilience4j:
       
 server:
   port: 9090     
-   
+
 #Actuator
 management:
   endpoints:
     web:
       exposure:
-        include: ["health", "info", "hystrix.stream"]
+        include: "*"
+        exclude: threaddump, heapdump
   endpoint:
     health:
       show-details: always

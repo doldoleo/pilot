@@ -9,7 +9,7 @@ spring:
       client:
         config:
           user: # UserServiceOpenFeign.java 에서 선언된 feign client name
-            url: http://payment-service.pilot
+            url: user-service.pilot.svc.cluster.local:5000
             connectTimeout: 3000
             readTimeout: 3000
             loggerLevel: FULL
