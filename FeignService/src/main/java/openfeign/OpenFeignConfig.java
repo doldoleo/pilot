@@ -13,12 +13,15 @@ import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StreamUtils;
 
+import feign.Capability;
 import feign.Logger;
 import feign.Request;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.Response;
 import feign.Retryer;
+import feign.micrometer.MicrometerCapability;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
@@ -106,5 +109,10 @@ public class OpenFeignConfig {
 	Retryer.Default retryer() {
 		// 0.1초의 간격으로 시작해 최대 3초의 간격으로 점점 증가하며, 최대5번 재시도한다.
 		return new Retryer.Default(100L, TimeUnit.SECONDS.toMillis(3L), 5);
+	}
+	
+	@Bean
+	Capability capability(final MeterRegistry registry) {
+	    return new MicrometerCapability(registry);
 	}
 }
