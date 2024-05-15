@@ -1,24 +1,41 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoders;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 
+/**
+ * Webflux 기반 Security 설정 방법
+ */
 @Configuration
-@EnableWebSecurity
+@EnableWebFluxSecurity
 public class ResourceServerConfig {
-	
+	@Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
+	private String issuerUri;
+
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	http
-    	.securityMatcher("/scg/**")
-    	.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-		.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-		;
-    	return http.build();
+    SecurityWebFilterChain  securityFilterChain(ServerHttpSecurity http) throws Exception {
+    	 
+    	 http
+    	 .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/scg/**"))
+         .authorizeExchange(exchanges -> exchanges
+             .anyExchange().authenticated()
+         )
+         .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
+         ;
+     return http.build();
+    }
+    
+    @Bean
+    ReactiveJwtDecoder jwtDecoder() {
+        return ReactiveJwtDecoders.fromIssuerLocation(issuerUri);
     }
     
     /**
