@@ -24,7 +24,7 @@ public class ResourceServerConfig {
     SecurityWebFilterChain  securityFilterChain(ServerHttpSecurity http) throws Exception {
     	 
     	 http
-    	 .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/scg/**"))
+ //   	 .securityMatcher(new PathPatternParserServerWebExchangeMatcher("/scg/**"))
          .authorizeExchange(exchanges -> exchanges
              .anyExchange().authenticated()
          )
