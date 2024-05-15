@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <Configuration>
-		 <!-- 변수 지정 -->
+	<!-- 변수 지정 -->
     <property name="LOG_DIR" value="./logs" />
     <property name="LOG_FILE_NAME" value="${LOG_DIR}/app.log" />
 	<property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta(%-4relative) - [%thread{10}, %X{traceId:-}, %X{spanId:-}] %cyan(%logger{20}): %msg%n" />
@@ -39,6 +39,10 @@
 
    <!-- ELK - Logstash 로 로그를 전송하기 위한 appender -->
    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+   		<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+        <springProperty scope="context" name="springAppVersion" source="spring.application.version"/>
+        <contextName>${springAppName}</contextName>
+   		
         <destination>${destination}</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
           <providers>
@@ -108,9 +112,6 @@
     </springProfile>
     
     <springProfile name="dev">
-     	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
-        <springProperty scope="context" name="springAppVersion" source="spring.application.version"/>
-        <contextName>${springAppName}</contextName>
         
         <logger name="com.example.demo" level="DEBUG" additivity="false">
             <appender-ref ref="STDOUT" />

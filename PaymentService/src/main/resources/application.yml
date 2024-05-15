@@ -12,7 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9000      
+          issuer-uri: http://192.168.0.101:9000      
 
 eureka:  
    instance:    
