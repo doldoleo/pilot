@@ -25,10 +25,6 @@ dependencies {
 	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
     
-    //openfeign
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-    //circuitbreaker
-    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'        // logstash logback
     
     /** swagger**/
@@ -36,7 +32,6 @@ dependencies {
  	
  	/**oauth2 **/
  	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server' 
-    implementation 'org.springframework.boot:spring-boot-starter-security' 
     
     	   // slf4j & logback
 	implementation('org.slf4j:jcl-over-slf4j')

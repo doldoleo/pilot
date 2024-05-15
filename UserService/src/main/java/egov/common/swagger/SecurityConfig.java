@@ -5,17 +5,36 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
+
+	/**
+	 * 
+	 * @return
+	 */
 	@Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .authorizeHttpRequests(request -> request
-                    .requestMatchers("/api/v1/user/**").hasAuthority("SCOPE_message.read"))
-                .oauth2ResourceServer(resource -> resource.jwt(Customizer.withDefaults()));
-        return httpSecurity.build();
-    }
+	WebSecurityCustomizer webSecurityCustomizer() {
+		return web -> web.debug(false).ignoring().requestMatchers(
+				"/swagger-ui/**", 
+				"/swagger-ui.html", 
+				"/api-docs/user",
+				"/webjars/**", "/swagger/**");
+	}
+	
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.csrf(AbstractHttpConfigurer::disable);
+		http.securityMatcher("/api/v1/user/**")
+				.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+				.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+		return http.build();
+	}
+	
+	
+
 }

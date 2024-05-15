@@ -7,13 +7,6 @@ spring:
   profiles:
     active: local
   
-  #oauth2 서버 리소스 서버 설정
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://192.168.0.101:9000      
-
 eureka:  
    instance:    
       prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
@@ -58,7 +51,7 @@ management:
 # HTML 형식의 swagger 문서의 사용자 경로 지정
 springdoc:
   api-docs:
-    path: /api/v1/payment/api-docs # 전체 API 정보를 가져오는 REST API
+    path: /api-docs/payment # 전체 API 정보를 가져오는 REST API
   packages-to-scan: com.example.demo   #api가 정의된 package 검색경로
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8  
@@ -70,13 +63,37 @@ springdoc:
     #path: /payment-service/swagger-ui.html  # swagger-ui 접근 경로에 대한 별칭, 해당 주소로 접속해도 http://localhost:8080/swagger-ui/index.html로 리다이렉션 됨.
     doc-expansion: none
     oauth:
-     client-id: your-client  
+      clientId: swagger
+      clientSecret: 1234 
   paths-to-match:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
 
-logging:
-  level:
-    com:
-      netflix:
-        eureka: OFF
-        discovery: OFF 
+---
+spring:
+  config:
+     activate:
+        on-profile: local
+  security:
+     oauth2:
+        resourceserver:
+           jwt:
+              issuer-uri: http://localhost:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
+        client:
+           provider: 
+              komsco: # 조폐공사 Provider 등록!
+                  token-uri: http://localhost:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
+       
+---
+spring:
+  config:
+     activate:
+        on-profile: dev
+  security:
+     oauth2:
+        resourceserver:
+           jwt:
+              issuer-uri: http://192.168.0.101:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
+        client:
+           provider: 
+              komsco: # 조폐공사 Provider 등록!
+                  token-uri: http://192.168.0.101:9000/oauth2/token

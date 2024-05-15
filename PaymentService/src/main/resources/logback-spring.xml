@@ -101,6 +101,9 @@
         </encoder>
     </appender>	  
 
+    <logger name="com.netflix.eureka" level="OFF"/>
+    <logger name="com.netflix.discovery" level="OFF"/>
+
     <!-- 로컬에서는 로그를 전송하지 않도록 설정 -->
     <springProfile name="local">
         <root level="INFO">

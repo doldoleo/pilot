@@ -1,4 +1,4 @@
-package egov.common.swagger;
+package com.example.demo.config;
 
 import java.util.Arrays;
 
@@ -17,8 +17,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 
 @OpenAPIDefinition(
-        info = @Info(title = "User-Service API 명세서",
-                description = "파일럿을 위한 사용자 샘플 서비스 API 명세서",
+        info = @Info(title = "지급결제 API 명세서",
+                description = "파일럿을 위한 결제 샘플 서비스 API 명세서",
                 version = "v1"))
 @RequiredArgsConstructor
 @Configuration
@@ -39,8 +39,8 @@ public class SwaggerConfig {
                     ))
                     .security(Arrays.asList(
                           new SecurityRequirement().addList("spring_oauth")))
-            
         ;
     }
-	 
+
+	
 }
