@@ -80,8 +80,10 @@
             	</providers>
             </encoder>
         </appender>
+        
         <logger name="com.example.demo" level="DEBUG"/>
         <logger name="zipkin2" level="DEBUG"/>
+        
         <root level="INFO">
             <appender-ref ref="LOGSTASH" />
             <appender-ref ref="STDOUT" />

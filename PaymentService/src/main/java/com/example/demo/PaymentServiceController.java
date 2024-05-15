@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Tag(name = "결재 서비스 V1", description = "결재 관련 API(기본)")
+@Tag(name = "결제 서비스 V1", description = "결제 관련 API(기본)")
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/payment")
@@ -23,10 +23,11 @@ public class PaymentServiceController {
 	 	@Value("${server.port}")
 	    private String port;
 
-	 	@Operation(summary = "결재상태 확인", 
-				   description = "결재상태를 반환하는 인터페이스", 
+	 	@Operation(summary = "결제상태 확인", 
+				   description = "결제상태를 반환하는 인터페이스", 
 				   responses = {
-				                 @ApiResponse(responseCode = "200", description = "결재상태를 반환함.") 
+				                 @ApiResponse(responseCode = "200", description = "결제상태를 반환함."), 
+				                 @ApiResponse(responseCode = "401", description = "권한이 없습니다.")
 				                 })
 	    @GetMapping("/check")
 	    public String check() {

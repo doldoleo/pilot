@@ -20,6 +20,15 @@ spring:
             - AddRequestHeader=first-request, first-request-header2 #요청 헤더 추가 필터 적용
             - AddResponseHeader=first-response, first-response-header2 #응답 헤더 추가 필터 적용
             - CustomFilter 
+        - id : payment-service1
+          uri: lb://PAYMENT-SERVICE # lb://SECONDSERVICE #Eureka에 등록된 서비스 이름 지정 Spring Cloud Gateway에서는 Eureka에 등록된 서비스를 검색하고, Load Balancer는 Eureka에서 처리한다.
+          predicates:
+            - Path=/api/v1/payment1/**
+            - Method=GET,POST,PUT,DELETE,OPTIONS
+          filters:
+            - AddRequestHeader=first-request, first-request-header2 #요청 헤더 추가 필터 적용
+            - AddResponseHeader=first-response, first-response-header2 #응답 헤더 추가 필터 적용
+            - CustomFilter     
         - id : user-service
           uri: lb://USER-SERVICE #http://localhost:8000 OR lb://USER-SERVICE
           predicates:

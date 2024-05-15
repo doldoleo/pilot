@@ -6,7 +6,14 @@ spring:
     name: payment-service
   profiles:
     active: local
-        
+  
+  #oauth2 서버 리소스 서버 설정
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000      
+
 eureka:  
    instance:    
       prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
@@ -22,7 +29,7 @@ eureka:
 info:
   app:
     name: Payment Service
-    description: 지결결재 서비스 제공
+    description: 지결결제 서비스 제공
 
 ##actuator 지정 (서비스 상태)    
 management:
@@ -61,7 +68,15 @@ springdoc:
     groups-order: DESC # path, query, body, response 순으로 출력
     disable-swagger-default-url: true
     #path: /payment-service/swagger-ui.html  # swagger-ui 접근 경로에 대한 별칭, 해당 주소로 접속해도 http://localhost:8080/swagger-ui/index.html로 리다이렉션 됨.
-    doc-expansion: none  
+    doc-expansion: none
+    oauth:
+     client-id: your-client  
   paths-to-match:
-    - /** # swagger-ui에 표시할 api의 엔드포인트 패턴      
-               
+    - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
+
+logging:
+  level:
+    com:
+      netflix:
+        eureka: OFF
+        discovery: OFF 

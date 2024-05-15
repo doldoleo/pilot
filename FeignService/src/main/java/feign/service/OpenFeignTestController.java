@@ -33,7 +33,7 @@ public class OpenFeignTestController {
 	@Autowired
 	private PaymentServiceOpenFeign paymentOpenFeign;
 
-	@Operation(summary = "", description = "사용자 서비스와 지급결재를 서비스를 호출해서 ", responses = {
+	@Operation(summary = "", description = "사용자 서비스와 지급결제를 서비스를 호출해서 ", responses = {
 			@ApiResponse(responseCode = "200", description = "feign 서비스 처리결과 반환함.") })
 	@GetMapping("/call")
 	public Greeting call() {

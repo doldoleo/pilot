@@ -46,7 +46,7 @@ springdoc:
     config-url: /v3/api-docs/swagger-config
     urls:
        - url: /api/v1/payment/api-docs
-         name: 지급결재 서비스  
+         name: 지급결제 서비스  
        - url: /api/v1/user/api-docs
          name: 회원 서비스  
        - url: /api/v1/merge/api-docs
