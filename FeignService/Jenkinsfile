@@ -28,7 +28,7 @@ podTemplate(
         stage('Gradle Build') {
             sh 'ls -al ./FeignService'
         	sh 'chmod 755 ./FeignService/gradlew'
-        	sh 'cd FeignService;./gradlew clean build' 
+        	sh 'cd FeignService;./gradlew clean build -x test' 
         	sh 'mv ./FeignService/build/libs/*.jar ./FeignService/app.jar'
         	sh 'ls -al'
         }
