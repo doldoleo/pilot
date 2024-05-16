@@ -1,4 +1,4 @@
-package feign.service;
+package komsco.api.web;
 
 import java.util.Collections;
 
@@ -15,11 +15,11 @@ import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import komsco.feign.model.Greeting;
+import komsco.feign.service.PaymentServiceOpenFeign;
+import komsco.feign.service.UserServiceOpenFeign;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import openfeign.PaymentServiceOpenFeign;
-import openfeign.UserServiceOpenFeign;
-import openfeign.model.Greeting;
 
 @Tag(name = "Feign 서비스 V1", description = "MSA간 서비스 호출 하는 방법과 관련된 Controller")
 @RequiredArgsConstructor
@@ -43,18 +43,5 @@ public class OpenFeignTestController {
 		return result;
 	}
 
-	@ExceptionHandler(FeignException.class)
-	public ResponseEntity<?> handleFeignException(FeignException e) {
-		return ResponseEntity.badRequest().body(Collections.singletonMap("code", "FeignException"));
-	}
 
-	@ExceptionHandler(NoFallbackAvailableException.class)
-	public ResponseEntity<?> handleNoFallbackAvailableException(NoFallbackAvailableException e) {
-		return ResponseEntity.badRequest().body(Collections.singletonMap("code", "NoFallbackAvailableException"));
-	}
-
-	@ExceptionHandler(CallNotPermittedException.class)
-	public ResponseEntity<?> handleCallNotPermittedException(CallNotPermittedException e) {
-		return ResponseEntity.internalServerError().body(Collections.singletonMap("code", "CallNotPermittedException"));
-	}
 }

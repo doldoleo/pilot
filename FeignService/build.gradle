@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'feign.service'
+group = 'komsco'
 version = '1.0'
 
 java {
@@ -34,14 +34,21 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
  
-	   // slf4j & logback
+	// slf4j & logback
 	implementation('org.slf4j:jcl-over-slf4j')
 	implementation('ch.qos.logback:logback-classic')
 	
+	// ms 추적 로깅
 	implementation 'io.github.openfeign:feign-micrometer'
 	implementation 'io.micrometer:micrometer-observation'
 	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+	
+	// oauth2 resourc server
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	// oauth2 client
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'	
 	   
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

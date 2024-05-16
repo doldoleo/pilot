@@ -1,4 +1,4 @@
-package openfeign.model;
+package komsco.feign.model;
 
 public record Greeting(
 		long id, 

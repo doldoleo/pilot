@@ -1,8 +1,8 @@
-package openfeign.circuit;
+package komsco.feign.circuit;
 
 import java.util.concurrent.TimeoutException;
-
 import java.util.function.Predicate;
+
 import feign.FeignException;
 import feign.RetryableException;
 
@@ -23,5 +23,5 @@ public class DefaultExceptionRecordFailurePredicate implements Predicate<Throwab
 
         return t instanceof FeignException.FeignServerException;
     }
-
+   
 }

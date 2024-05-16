@@ -1,4 +1,4 @@
-package openfeign;
+package komsco.config;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -11,6 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.util.StreamUtils;
 
 import feign.Capability;
@@ -22,13 +29,33 @@ import feign.Response;
 import feign.Retryer;
 import feign.micrometer.MicrometerCapability;
 import io.micrometer.core.instrument.MeterRegistry;
+import komsco.feign.OAuthClientCredentialsFeignManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
-@EnableFeignClients(basePackages = "openfeign")
+@EnableFeignClients(basePackages = "komsco")
 public class OpenFeignConfig {
+	public static final String CLIENT_REGISTRATION_ID = "komsco";
+	private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+	private final ClientRegistrationRepository clientRegistrationRepository;
+	
+    public OpenFeignConfig(OAuth2AuthorizedClientService oAuth2AuthorizedClientService,
+    	      ClientRegistrationRepository clientRegistrationRepository) {
+    	        this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
+    	        this.clientRegistrationRepository = clientRegistrationRepository;
+    	    }
+
+    @Bean
+    RequestInterceptor requestInterceptor1() {
+        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(CLIENT_REGISTRATION_ID);
+        OAuthClientCredentialsFeignManager clientCredentialsFeignManager =
+          new OAuthClientCredentialsFeignManager(authorizedClientManager(), clientRegistration);
+        return requestTemplate -> {
+            requestTemplate.header("Authorization", "Bearer " + clientCredentialsFeignManager.getAccessToken());
+        };
+    }
 	@Bean
-	RequestInterceptor requestInterceptor() {
+	RequestInterceptor requestInterceptor2() {
 		return requestTemplate -> {
 			if (Arrays.isNullOrEmpty(requestTemplate.body()) && !isGetOrDelete(requestTemplate)) {
 				// body가 비어있는 경우에 요청을 보내면 411 에러가 생김
@@ -54,7 +81,6 @@ public class OpenFeignConfig {
 
 	@Slf4j
 	static class CustomFeignRequestLogging extends Logger {
-
 		private final ThreadLocal<String> requestId = new ThreadLocal<>();
 
 		@Override
@@ -115,4 +141,17 @@ public class OpenFeignConfig {
 	Capability capability(final MeterRegistry registry) {
 	    return new MicrometerCapability(registry);
 	}
+	
+	
+	 @Bean
+	    OAuth2AuthorizedClientManager authorizedClientManager() {
+	        OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
+	            .clientCredentials()
+	            .build();
+
+	        AuthorizedClientServiceOAuth2AuthorizedClientManager authorizedClientManager =
+	            new AuthorizedClientServiceOAuth2AuthorizedClientManager(clientRegistrationRepository, oAuth2AuthorizedClientService);
+	        authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
+	        return authorizedClientManager;
+	    }
 }

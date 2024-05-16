@@ -1,9 +1,28 @@
 spring:
   config:
     activate:
-      on-profile: local          
+      on-profile: local  
+              
+  security:
+     oauth2:
+        resourceserver:
+           jwt:
+              issuer-uri: http://localhost:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
+        client:
+           registration:
+              komsco:
+                 authorization-grant-type: client_credentials
+                 client-id: swagger
+                 client-secret: 1234
+           provider: 
+              komsco: # 조폐공사 Provider 등록!
+                  token-uri: http://localhost:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
+
   cloud:
     openfeign:
+      oauth2:
+        enabled: true
+        clientRegistrationId: komsco
       circuitbreaker:
          enabled: true
       client:
@@ -20,5 +39,4 @@ spring:
             loggerLevel: FULL
           default:
             connectTimeout: 3000
-            readTimeout: 3000   
-          
+            readTimeout: 3000             

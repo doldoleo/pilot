@@ -1,4 +1,4 @@
-package openfeign.circuit;
+package komsco.feign.circuit;
 
 
 import java.lang.reflect.Method;
