@@ -1,4 +1,4 @@
-package komsco.config;
+package com.example.demo;
 
 import java.util.List;
 

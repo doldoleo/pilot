@@ -1,25 +1,35 @@
 package com.example.demo.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class CorsConfig {
 
-    @Bean
+	@Bean
     CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
+	 	CorsConfigurationSource source = corsConfigurationSource();
+        return new CorsFilter(source);
+    }
+     
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+    	CorsConfiguration config = new CorsConfiguration();
+    	
         config.setAllowCredentials(true);
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+    	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    	source.registerCorsConfiguration("/**", config);
+    	return source;
     }
 
 }

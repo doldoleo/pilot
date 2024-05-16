@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 public class ResourceServerConfig {
@@ -14,6 +15,7 @@ public class ResourceServerConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     	http
+    	.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfig().corsConfigurationSource()))
     	.securityMatcher("/api/v1/merge/**")
     	.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
 		.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))

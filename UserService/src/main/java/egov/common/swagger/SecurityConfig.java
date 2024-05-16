@@ -29,6 +29,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable);
+		http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfig().corsConfigurationSource()));
 		http.securityMatcher("/api/v1/user/**")
 				.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
 				.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
