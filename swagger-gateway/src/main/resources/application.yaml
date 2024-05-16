@@ -106,7 +106,12 @@ spring:
           uri: http://user-service.pilot #http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
             - Path=/api-docs/user
-            - Method=GET          
+            - Method=GET     
+        - id : feign-service-api-docs
+          uri: http://feign-service.pilot #lb://FEIGN-SERVICE
+          predicates:
+            - Path=/api-docs/merge/**
+            - Method=GET    
         - id : feign-service
           uri: http://feign-service.pilot #http://payment-service.pilot #http://localhost:8000 OR lb://USER-SERVICE
           predicates:
