@@ -73,11 +73,11 @@ spring:
      oauth2:
         resourceserver:
            jwt:
-              issuer-uri: http://192.168.0.101:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
+              issuer-uri: http://localhost:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
         client:
            provider: 
               komsco: # 조폐공사 Provider 등록!
-                  token-uri: http://192.168.0.101:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
+                  token-uri: http://localhost:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
        
 ---
 spring:
