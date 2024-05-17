@@ -22,10 +22,11 @@ public class GreetingController {
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
 
-	@Operation(summary = "사용자 조회", 
+	@Operation(summary = "사용자 조회(인증된 사람만)", 
 			   description = "사용자를 조회한 정보를 반환함", 
 			   responses = {
-			                 @ApiResponse(responseCode = "200", description = "조회된 사용자 정보를 반환함.") 
+			                 @ApiResponse(responseCode = "200", description = "조회된 사용자 정보를 반환함.") ,
+			                 @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자는 권한없음을 반환함.") 
 			                 })
 	@GetMapping("/greeting")
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -34,4 +35,15 @@ public class GreetingController {
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
 	}
 	
+	
+	@Operation(summary = "사용자 조회(누구나)", 
+			   description = "사용자를 조회한 정보를 반환함", 
+			   responses = {
+			                 @ApiResponse(responseCode = "200", description = "조회된 사용자 정보를 반환함.") 
+			                 })
+	@GetMapping("/nogreeting")
+	public Greeting nogreeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+		log.info("no auth: {}", name);
+		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+	}
 }
