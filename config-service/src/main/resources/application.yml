@@ -3,9 +3,9 @@ server:
 
 spring:  
    application:   
-      name: config-service 
+      name: config-service
    profiles:
-      active: local 
+      active: local
    
 eureka:  
    instance:    
