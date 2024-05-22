@@ -6,7 +6,16 @@ spring:
       name: config-service
    profiles:
       active: local
-   
+   cloud:
+     config:
+       name: config-service # 현재 애플리케이션의 {spring.applcation.name}을 지정
+       fail-fast: true  #config-server에 연결할 수 없는 경우 애플리케이션 구동에 실패. retry 옵션을 사용하고자 하는 경우에 반드시 선언
+       retry:
+         initial-interval: 1000 #config server api 요청 실패 후 다음 retry 요청을 위한 internal (unit: millisecond)
+         max-attempts: 5 #최대로 retry하는 횟수 
+         multiplier: 1.1 #한번 retry 할 때마다 interval 시간의 지연율을 곱
+       request-connect-timeout: 2000 #config server 요청 시 사용하는 connection timeout 값  (unit: millisecond)
+       request-read-timeout: 10000 #config server 요청 시 사용하는  read timeout 값 (unit: millisecond)
 eureka:  
    instance:    
       prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
@@ -30,7 +39,7 @@ management:
   endpoints:
     web:
        exposure:
-         include: "*"
+         include: "*" #/actuator/refresh endpoint를 노출 시켜, 클라이언트의 context refresh를 실행시키도록 합니다.context refresh가 실행되면 config server로 부터 현재 프로퍼티 정보를 받아옵니다.
   tracing:
     sampling:
       probability: 1.0
@@ -69,6 +78,7 @@ spring:
   config:
      activate:
         on-profile: local
+     import: "optional:configserver:http://localhost:8888"   
   security:
      oauth2:
         resourceserver:
@@ -78,12 +88,12 @@ spring:
            provider: 
               komsco: # 조폐공사 Provider 등록!
                   token-uri: http://localhost:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
-       
 ---
 spring:
   config:
      activate:
         on-profile: dev
+  import: "optional:configserver:http://192.168.0.101:8888"      
   security:
      oauth2:
         resourceserver:
