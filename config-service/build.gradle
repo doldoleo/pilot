@@ -32,10 +32,12 @@ dependencies {
  	/**oauth2 **/
  	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server' 
     
-    	   // slf4j & logback
+    // slf4j & logback
 	implementation('org.slf4j:jcl-over-slf4j')
 	implementation('ch.qos.logback:logback-classic')
     
+    //
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
     
 	compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

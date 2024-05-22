@@ -6,6 +6,9 @@ spring:
       name: config-service
    profiles:
       active: local
+   config:
+    import: optional:configserver:http://localhost:8888
+    
 eureka:  
    instance:    
       prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
@@ -63,6 +66,10 @@ springdoc:
   paths-to-match:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
 
+config-service:
+  profile: "dev"
+  region: "repository"
+  
 ---
 spring:
   config:
