@@ -67,8 +67,8 @@ springdoc:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
 
 config-service:
-  profile: "dev"
-  region: "repository"
+  profile: "1234"
+  region: "1234"
   
 ---
 spring:
@@ -79,11 +79,11 @@ spring:
      oauth2:
         resourceserver:
            jwt:
-              issuer-uri: http://localhost:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
+              issuer-uri: http://auth.5finger.co.kr:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
         client:
            provider: 
               komsco: # 조폐공사 Provider 등록!
-                  token-uri: http://localhost:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
+                  token-uri: http://auth.5finger.co.kr:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
 ---
 spring:
   config:
