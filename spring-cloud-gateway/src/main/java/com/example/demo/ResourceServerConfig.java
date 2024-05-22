@@ -24,8 +24,10 @@ public class ResourceServerConfig {
     SecurityWebFilterChain  securityFilterChain(ServerHttpSecurity http) throws Exception {
     	 
     	 http
-         .authorizeExchange(exchanges -> exchanges
-             .anyExchange().authenticated()
+         .authorizeExchange(exchanges -> {
+             exchanges.pathMatchers("/actuator").permitAll();
+             exchanges.anyExchange().authenticated();
+            }
          )
          .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
          ;

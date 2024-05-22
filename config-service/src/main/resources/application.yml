@@ -1,0 +1,95 @@
+server:
+   port: 8090
+
+spring:  
+   application:   
+      name: config-service 
+   profiles:
+      active: local 
+   
+eureka:  
+   instance:    
+      prefer-ip-address: true  # 유레카 서버에 애플리케이션 이름에 매핑되는 호스트명 등록 여부
+      instance-id:  ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+      lease-renewal-interval-in-seconds: 300 # 디스커버리한테 1초마다 하트비트 전송
+   client:    
+      registryFetchIntervalSeconds: 5    #유레카 서버에게 서비스 정보를 가져오는 주기
+      disable-delta: true    #유레카 서버에게 서비스 정보를 가져올 때 변경된 내용만 가지고 올지에 대한 여부
+      register-with-eureka: true    
+      fetch-registry: true    
+      serviceUrl:      
+         defaultZone: http://admin:admin@192.168.0.101:31815/eureka/ #http://admin:admin@192.168.0.101:31815/eureka/
+
+info:
+  app:
+    name: User Service
+    description: 회원관리 서비스 제공
+
+# config server actuator
+management:
+  endpoints:
+    web:
+       exposure:
+         include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3_MULTI
+    enabled: true
+  zipkin:
+    tracing:
+       endpoint: http://192.168.0.101:30411/api/v2/spans   
+       
+# HTML 형식의 swagger 문서의 사용자 경로 지정
+springdoc:
+  api-docs:
+    path: /api-docs/user # 전체 API 정보를 가져오는 REST API
+  packages-to-scan: com.example.demo   #api가 정의된 package 검색경로
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8  
+  swagger-ui:
+    operations-sorter: method  # delete - get - patch - post - put 순으로 정렬, alpha를 사용하면 알파벳 순으로 정렬 가능
+    tags-sorter: alpha # 태그를 알파벳 순으로 정렬
+    groups-order: DESC # path, query, body, response 순으로 출력
+    disable-swagger-default-url: true
+    #path: /swagger-ui.html  # swagger-ui 접근 경로에 대한 별칭, 해당 주소로 접속해도 http://localhost:8080/swagger-ui/index.html로 리다이렉션 됨.
+    doc-expansion: none  
+    
+    oauth:
+      clientId: swagger
+      clientSecret: 1234
+      
+  paths-to-match:
+    - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
+
+---
+spring:
+  config:
+     activate:
+        on-profile: local
+  security:
+     oauth2:
+        resourceserver:
+           jwt:
+              issuer-uri: http://localhost:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
+        client:
+           provider: 
+              komsco: # 조폐공사 Provider 등록!
+                  token-uri: http://localhost:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
+       
+---
+spring:
+  config:
+     activate:
+        on-profile: dev
+  security:
+     oauth2:
+        resourceserver:
+           jwt:
+              issuer-uri: http://auth.5finger.co.kr:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
+        client:
+           provider: 
+              komsco: # 조폐공사 Provider 등록!
+                  token-uri: http://auth.5finger.co.kr:9000/oauth2/token
