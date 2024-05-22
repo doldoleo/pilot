@@ -19,7 +19,6 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator' 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	
 	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
@@ -29,9 +28,6 @@ dependencies {
     /** swagger**/
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
  	
- 	/**oauth2 **/
- 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server' 
-    
     // slf4j & logback
 	implementation('org.slf4j:jcl-over-slf4j')
 	implementation('ch.qos.logback:logback-classic')
