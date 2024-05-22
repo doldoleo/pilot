@@ -69,35 +69,22 @@ springdoc:
   paths-to-match:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
 
-config-service:
-  profile: "12DFSDFS34"
-  region: "12SDFSDF34"
+
   
 ---
 spring:
   config:
      activate:
         on-profile: local
-  security:
-     oauth2:
-        resourceserver:
-           jwt:
-              issuer-uri: http://auth.5finger.co.kr:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
-        client:
-           provider: 
-              komsco: # 조폐공사 Provider 등록!
-                  token-uri: http://auth.5finger.co.kr:9000/oauth2/token #http://192.168.0.101:9000/oauth2/token
+config-service:
+  profile: "local"
+  region: "test"
+          
 ---
 spring:
   config:
      activate:
         on-profile: dev
-  security:
-     oauth2:
-        resourceserver:
-           jwt:
-              issuer-uri: http://auth.5finger.co.kr:9000  #인증에 필요한 jwt 토큰을 제공해주는 서버
-        client:
-           provider: 
-              komsco: # 조폐공사 Provider 등록!
-                  token-uri: http://auth.5finger.co.kr:9000/oauth2/token
+config-service:
+  profile: "dev"
+  region: "test"
