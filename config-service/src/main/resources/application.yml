@@ -7,16 +7,8 @@ spring:
    profiles:
       active: local
    
-   config:
-      import: optional:configserver:http://localhost:8888
-#       import: "optional:configserver:"
-#   cloud:
-#      config:
-#        uri: http://localhost:8888/
-#        name: config-service
-   cloud:
-      config:
-        enabled: false       
+#   config:
+#      import: optional:configserver:http://localhost:8888 # spring-boot 에서 config-server 정의
     
 info:
   app:
@@ -31,6 +23,16 @@ management:
          include: "*" #/actuator/refresh endpoint를 노출 시켜, 클라이언트의 context refresh를 실행시키도록 합니다.context refresh가 실행되면 config server로 부터 현재 프로퍼티 정보를 받아옵니다.
                       # - "refresh" # 위 '*'  으로 전체를 공개 해서 주석
                       # - "bus-refresh" # 위 '*'  으로 전체를 공개 해서 주석
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3_MULTI
+    enabled: true
+  zipkin:
+    tracing:
+       endpoint: http://192.168.0.101:30411/api/v2/spans  
        
 # HTML 형식의 swagger 문서의 사용자 경로 지정
 springdoc:
@@ -54,15 +56,20 @@ spring:
   config:
      activate:
         on-profile: local
-config-service:
-  profile: "local_2"
-  region: "test_2"
+  cloud:
+     config:
+        enabled: false       
+        uri: http://localhost:8888/  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
+        name: config-service
           
 ---
 spring:
   config:
      activate:
         on-profile: dev
-config-service:
-  profile: "dev"
-  region: "test"
+  cloud:
+     config:
+        enabled: false       
+        uri: http://192.168.0.101:8888/  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
+        name: config-service  #spring.application.name
+        

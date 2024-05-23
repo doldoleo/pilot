@@ -3,6 +3,8 @@ spring:
     activate:
       on-profile: local      
 
+    import: optional:configserver
+
   #oauth2 서버 리소스 서버 설정
   security:
     oauth2:
@@ -11,6 +13,11 @@ spring:
           issuer-uri: http://auth.5finger.co.kr:9000
           
   cloud:
+    config:
+        enabled: false       
+        uri: http://localhost:8888/
+        name: spring-cloud-gateway
+
     gateway:
       default-filters: # 전역 필터 설정 (모든 라우터 목록들에 대해서 해당 필터 적용)
         - name : GlobalFilter #전역 필터 클래스 이름
