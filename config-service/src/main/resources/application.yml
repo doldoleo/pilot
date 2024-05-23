@@ -52,8 +52,8 @@ springdoc:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
 
 config-service:
-   profile: local
-   region: test
+   profile: local1
+   region: test1
      
 ---
 spring:
