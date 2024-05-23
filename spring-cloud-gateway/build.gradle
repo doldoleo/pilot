@@ -23,21 +23,26 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator' 
+
 	// oauth2 resourc server
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	//config server
+
+	//config framework
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	
 	// distributed micro service monitoring
 	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+	
 	//logstash
 	implementation 'net.logstash.logback:logstash-logback-encoder:7.1.1'
-	//lombok
-	compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
 	// slf4j & logback
 	implementation('org.slf4j:jcl-over-slf4j')
 	implementation('ch.qos.logback:logback-classic')
+
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

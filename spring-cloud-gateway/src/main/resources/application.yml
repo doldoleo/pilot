@@ -7,15 +7,6 @@ spring:
   profiles:
       active: local 
 
-  #config server 설정
-  config:
-    import: optional:configserver:http://localhost:8888
-#     import: configserver:http://localhost:8888
-  cloud:
-    config:
-      name: spring-cloud-gateway
-      profile: local
-      
 management:
   endpoints:
     web:
