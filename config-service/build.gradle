@@ -22,21 +22,24 @@ dependencies {
 	
 	//spring cloud config client
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	//
+	// spring cloud bus
+	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
+	
+	//property processor
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
 	
+	//micro meter
 	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
     
-    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'        // logstash logback
-    
-    /** swagger**/
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
- 	
-    // slf4j & logback
+     // logstash logback
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'       
+     // slf4j & logback
 	implementation('org.slf4j:jcl-over-slf4j')
 	implementation('ch.qos.logback:logback-classic')
     
+    /** swagger**/
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
   
     
 	compileOnly 'org.projectlombok:lombok'

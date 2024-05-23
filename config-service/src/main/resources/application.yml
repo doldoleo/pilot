@@ -50,7 +50,11 @@ springdoc:
     doc-expansion: none  
   paths-to-match:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
-  
+
+config-service:
+   profile: local
+   region: test
+     
 ---
 spring:
   config:
@@ -61,7 +65,14 @@ spring:
         enabled: false       
         uri: http://localhost:8888/  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
         name: config-service
-          
+        
+   ## rabbit mq 정의
+  rabbitmq:
+    host: 192.168.0.101
+    port: 30209
+    username: rabbit
+    password: rabbit   
+         
 ---
 spring:
   config:

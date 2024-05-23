@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,16 +16,17 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
  */
 @Configuration
 @EnableWebFluxSecurity
-public class ResourceServerConfig {
+public class SecurityServerConfig {
 	@Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
 	private String issuerUri;
 
     @Bean
     SecurityWebFilterChain  securityFilterChain(ServerHttpSecurity http) throws Exception {
-    	 
+    	http.csrf(csrf -> csrf.disable()); //Cross Site Request Forgery disable
+		http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfig().corsConfigurationSource()));    	 
     	 http
          .authorizeExchange(exchanges -> {
-             exchanges.pathMatchers("/actuator").permitAll();
+             exchanges.pathMatchers("/actuator/*").permitAll();
              exchanges.anyExchange().authenticated();
             }
          )
