@@ -62,10 +62,12 @@ spring:
         on-profile: local
   cloud:
      config:
-        enabled: false       
+        enabled: false  #config server에서 구동시 설정가져오기 마!!!      
         uri: http://localhost:8888/  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
         name: config-service
-        
+     bus:
+        enabled: false #버스에 구동시 설정가져오기 마!!!
+              
    ## rabbit mq 정의
   rabbitmq:
     host: 192.168.0.101
@@ -80,7 +82,14 @@ spring:
         on-profile: dev
   cloud:
      config:
-        enabled: false       
+        enabled: true  #config server에서 구동시 설정가져오기 마!!!        
         uri: http://192.168.0.101:8888/  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
         name: config-service  #spring.application.name
-        
+     bus:
+        enabled: true #버스에 구동시 설정가져와주세요~~~~  
+   ## rabbit mq 정의
+  rabbitmq:
+    host: 192.168.0.101
+    port: 30209
+    username: rabbit
+    password: rabbit   
