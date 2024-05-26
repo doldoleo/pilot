@@ -7,8 +7,32 @@ spring:
    profiles:
       active: local
    
-#   config:
-#      import: optional:configserver:http://localhost:8888 # spring-boot 에서 config-server 정의
+   cloud:
+      config:
+        fail-fast: true #config-server에 연결할 수 없는 경우 애플리케이션 구동에 실패
+        retry: #config server에 연결 실패하거나 응답 에러가 발생하는 경우 재시도하는 정책
+          initial-interval: 1000 #config server api 요청 실패 후 다음 retry 요청을 위한 internal 입니다. 단위는 ms(밀리세컨드)입니다.
+          max-attempts: 5 #최대로 retry하는 횟수
+          multiplier: 1.1
+        request-connect-timeout: 2000 #config server 요청 시 사용하는 connection timeout 값
+        request-read-timeout: 10000 #config server 요청 시 사용하는 read timeout 값입니다.
+          
+    #spring cloud bus 
+      bus:
+        enabled: true #버스에 구동시 설정가져오기 마!!!
+        trace:
+            enabled: true
+        refresh:  # busrefresh EndPoint 활성화 호출시 전체 Config Bus Client 들에게 메세지 전송
+            enabled: true
+        env:
+            enabled: true
+
+   ## rabbit mq 정의
+   rabbitmq:
+      host: 192.168.0.101
+      port: 5672
+      username: rabbit
+      password: rabbit   
     
 info:
   app:
@@ -52,44 +76,32 @@ springdoc:
     - /** # swagger-ui에 표시할 api의 엔드포인트 패턴    
 
 config-service:
-   profile: local11ㄴㅇㄹㄴㅇㄹㄴ11
-   region: test11ㄴㅇㄹㄴㅇㄹ11
+   profile: 5
+   region: 222
      
 ---
 spring:
   config:
-     activate:
+     activate:  
         on-profile: local
+     import: optional:configserver:http://localhost:8889      
   cloud:
      config:
-        enabled: false  #config server에서 구동시 설정가져오기 마!!!      
-        uri: http://localhost:8888/  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
+        enabled: true  #config server에서 구동시 설정가져오기 마!!!      
+        uri: http://localhost:8889  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
         name: config-service
-     bus:
-        enabled: false #버스에 구동시 설정가져오기 마!!!
-              
-   ## rabbit mq 정의
-  rabbitmq:
-    host: 192.168.0.101
-    port: 30209
-    username: rabbit
-    password: rabbit   
-         
+        profile: local
+        
 ---
 spring:
   config:
      activate:
         on-profile: dev
+     import: optional:configserver:http://localhost:8889      
   cloud:
      config:
-        enabled: true  #config server에서 구동시 설정가져오기 마!!!        
-        uri: http://192.168.0.101:8888/  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
-        name: config-service  #spring.application.name
-     bus:
-        enabled: true #버스에 구동시 설정가져와주세요~~~~  
-   ## rabbit mq 정의
-  rabbitmq:
-    host: 192.168.0.101
-    port: 30209
-    username: rabbit
-    password: rabbit   
+        enabled: true  #config server에서 구동시 설정가져오기 마!!!      
+        uri: http://localhost:8889  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
+        name: config-service
+        profile: dev
+         
