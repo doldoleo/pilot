@@ -3,7 +3,7 @@ server:
 
 spring:  
    application:   
-      name: config-service
+      name: config-client-github
    profiles:
       active: local
    
@@ -17,34 +17,17 @@ spring:
         request-connect-timeout: 2000 #config server 요청 시 사용하는 connection timeout 값
         request-read-timeout: 10000 #config server 요청 시 사용하는 read timeout 값입니다.
           
-    #spring cloud bus 
-      bus:
-        enabled: true #버스에 구동시 설정가져오기 마!!!
-        trace:
-            enabled: true
-        refresh:  # busrefresh EndPoint 활성화 호출시 전체 Config Bus Client 들에게 메세지 전송
-            enabled: true
-        env:
-            enabled: true
-
-   ## rabbit mq 정의
-   rabbitmq:
-      host: 192.168.0.101
-      port: 5672
-      username: rabbit
-      password: rabbit   
-    
 info:
   app:
-    name: User Service
-    description: 회원관리 서비스 제공
+    name: config-client-github
+    description: config-client-github
 
 # config server actuator
 management:
   endpoints:
     web:
        exposure:
-         include: health, refresh, busrefresh #/actuator/refresh endpoint를 노출 시켜, 클라이언트의 context refresh를 실행시키도록 합니다.context refresh가 실행되면 config server로 부터 현재 프로퍼티 정보를 받아옵니다.
+         include: "*" #/actuator/refresh endpoint를 노출 시켜, 클라이언트의 context refresh를 실행시키도록 합니다.context refresh가 실행되면 config server로 부터 현재 프로퍼티 정보를 받아옵니다.
                                      # - "refresh" # 위 '*'  으로 전체를 공개 해서 주석
                                      # - "bus-refresh" # 위 '*'  으로 전체를 공개 해서 주석
   tracing:
@@ -84,12 +67,12 @@ spring:
   config:
      activate:  
         on-profile: local
-     import: optional:configserver:http://localhost:8889      
+     import: optional:configserver:http://localhost:8888      
   cloud:
      config:
         enabled: true  #config server에서 구동시 설정가져오기 마!!!      
-        uri: http://localhost:8889  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
-        name: config-service
+        uri: http://localhost:8888  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
+        name: config-client-github
         profile: local
         
 ---
@@ -97,11 +80,11 @@ spring:
   config:
      activate:
         on-profile: dev
-     import: optional:configserver:http://localhost:8889      
+     import: optional:configserver:http://localhost:8888     
   cloud:
      config:
         enabled: true  #config server에서 구동시 설정가져오기 마!!!      
-        uri: http://localhost:8889  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
-        name: config-service
+        uri: http://localhost:8888  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
+        name: config-client-github
         profile: dev
          

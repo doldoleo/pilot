@@ -22,8 +22,6 @@ dependencies {
 	
 	//spring cloud config client
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-	// spring cloud bus
-	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 	
 	//property processor
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
