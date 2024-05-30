@@ -1,8 +1,10 @@
 spring:
   config:
     activate:
-      on-profile: local      
-
+      on-profile: local 
+           
+    import: optional:configserver:http://localhost:10000/spring-cloud-gateway
+    
   #oauth2 서버 리소스 서버 설정
   security:
     oauth2:
@@ -10,14 +12,16 @@ spring:
         jwt:
           issuer-uri: http://auth.5finger.co.kr:9000
   
-        
   cloud:
     #spring cloud config 설정   
     config:
-        enabled: false       
-        uri: http://localhost:8888/
+        enabled: false  #config server에서 구동시 설정가져오기 마!!!      
+        uri: http://localhost:10000  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
         name: spring-cloud-gateway
-        
+        profile: local
+    bus:
+        destination: gateway.config.topic.local
+
     #gateway setting    
     gateway:
       default-filters: # 전역 필터 설정 (모든 라우터 목록들에 대해서 해당 필터 적용)

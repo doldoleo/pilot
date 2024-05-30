@@ -6,7 +6,29 @@ spring:
     name: spring-cloud-gateway #MSA에서 해당 서비스를 구별할 수 있는 고유한 ID
   profiles:
       active: local 
-
+  
+  cloud:
+    config:
+      fail-fast: true #config-server에 연결할 수 없는 경우 애플리케이션 구동에 실패
+      retry: #config server에 연결 실패하거나 응답 에러가 발생하는 경우 재시도하는 정책
+          initial-interval: 1000 #config server api 요청 실패 후 다음 retry 요청을 위한 internal 입니다. 단위는 ms(밀리세컨드)입니다.
+          max-attempts: 3 #최대로 retry하는 횟수
+          multiplier: 1.1
+      request-connect-timeout: 2000 #config server 요청 시 사용하는 connection timeout 값
+      request-read-timeout: 5000 #config server 요청 시 사용하는 read timeout 값입니다.
+        
+    bus:
+      enabled: true # # Bus로 설정변경 새로고침 활성화
+      trace:
+        enabled: true
+      refresh:  # busrefresh EndPoint 활성화 호출시 전체 Config Bus Client 들에게 메세지 전송
+        enabled: true
+      env:
+        enabled: true
+      
+  kafka:
+    bootstrap-servers: 192.168.0.101:29092 # kafka 서버 주소:포트
+    
 management:
   endpoints:
     web:
