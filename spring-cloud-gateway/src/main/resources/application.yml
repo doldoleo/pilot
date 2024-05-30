@@ -6,7 +6,7 @@ spring:
     name: spring-cloud-gateway #MSA에서 해당 서비스를 구별할 수 있는 고유한 ID
   profiles:
       active: local 
-  
+   
   cloud:
     config:
       fail-fast: true #config-server에 연결할 수 없는 경우 애플리케이션 구동에 실패
