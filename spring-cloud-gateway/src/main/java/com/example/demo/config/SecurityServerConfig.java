@@ -26,7 +26,7 @@ public class SecurityServerConfig {
 		http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfig().corsConfigurationSource()));    	 
     	 http
          .authorizeExchange(exchanges -> {
-             exchanges.pathMatchers("/actuator/*").permitAll();
+             exchanges.pathMatchers("/actuator/**").permitAll();
              exchanges.pathMatchers("/sayHello").permitAll();
              exchanges.anyExchange().authenticated();
             }

@@ -33,7 +33,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "refresh, busrefresh" # 추가된 부분
+        include: "*" 
           
   endpoint:
     gateway:
