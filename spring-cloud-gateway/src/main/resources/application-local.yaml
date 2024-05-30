@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: local 
            
-    import: optional:configserver:http://localhost:10000/spring-cloud-gateway
+    import: optional:configserver:http://192.168.0.101:10000/spring-cloud-gateway
     
   #oauth2 서버 리소스 서버 설정
   security:
@@ -16,7 +16,7 @@ spring:
     #spring cloud config 설정   
     config:
         enabled: false  #config server에서 구동시 설정가져오기 마!!!      
-        uri: http://localhost:10000  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
+        uri: http://192.168.0.101:10000  #spring-cloud-starter-config 모듈을 사용하면 정의하는 값
         name: spring-cloud-gateway
         profile: local
     bus:

@@ -27,6 +27,7 @@ public class SecurityServerConfig {
     	 http
          .authorizeExchange(exchanges -> {
              exchanges.pathMatchers("/actuator/*").permitAll();
+             exchanges.pathMatchers("/sayHello").permitAll();
              exchanges.anyExchange().authenticated();
             }
          )
