@@ -1,0 +1,46 @@
+server:
+  port: 9010
+
+spring:
+  application:
+    name: spring-cloud-gateway #MSA에서 해당 서비스를 구별할 수 있는 고유한 ID
+  profiles:
+      active: local 
+  
+  cloud:
+    bus:
+      enabled: true # # Bus로 설정변경 새로고침 활성화
+      trace:
+        enabled: true
+      refresh:  # busrefresh EndPoint 활성화 호출시 전체 Config Bus Client 들에게 메세지 전송
+        enabled: true
+      env:
+        enabled: true
+      
+  kafka:
+    bootstrap-servers: 192.168.0.101:29092 # kafka 서버 주소:포트
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" 
+          
+  endpoint:
+    gateway:
+      enabled: true  # default: true     
+      
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3_MULTI
+    enabled: true
+  zipkin:
+    tracing:
+       endpoint: http://192.168.0.101:30411/api/v2/spans      
+
+echo:
+  message: 
+   text: 'Hello, gowwwng!!!!'     
