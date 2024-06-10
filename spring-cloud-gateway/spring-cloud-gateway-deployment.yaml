@@ -19,4 +19,4 @@ spec:
       - name: scg
         image: doldoleo/spring-cloud-gateway:latest
         ports:
-        - containerPort: 9000
+        - containerPort: 9010
