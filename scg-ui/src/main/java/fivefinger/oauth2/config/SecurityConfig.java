@@ -109,6 +109,7 @@ public class SecurityConfig {
 		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 			try {
 				log.debug("LogoutHandler==>");
+				request.getSession().removeAttribute("userSession");
 				request.getSession().invalidate();
 				Object principal = authentication.getPrincipal();
 		        if (principal instanceof OAuth2UserPrincipal) {
