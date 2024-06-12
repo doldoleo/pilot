@@ -27,15 +27,13 @@ import fivefinger.oauth2.service.OAuth2UserPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-//	@Autowired
-//	private RestTemplate restTemplate;
-
-	
 	@Value("${spring.security.oauth2.client.registration.komsco.client-id}")
 	private String clientId;
 	@Value("${spring.security.oauth2.client.registration.komsco.client-secret}")
@@ -67,7 +65,6 @@ public class SecurityConfig {
 	WebSecurityCustomizer webSecurityCustomizer() {
 		return web -> web.debug(false).ignoring().requestMatchers("/css/**", "/img/**");
 	}
-
 
 
 	@Bean
@@ -111,6 +108,7 @@ public class SecurityConfig {
 		@Override
 		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 			try {
+				log.debug("LogoutHandler==>");
 				request.getSession().invalidate();
 				Object principal = authentication.getPrincipal();
 		        if (principal instanceof OAuth2UserPrincipal) {
