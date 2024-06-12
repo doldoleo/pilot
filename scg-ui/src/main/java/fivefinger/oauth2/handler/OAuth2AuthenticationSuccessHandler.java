@@ -52,7 +52,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
      	
      	   OAuthToken oAuthToken = new OAuthToken();
      	   oAuthToken.setAccessToken(oAuth2UserPrincipal.getOAuth2UserInfo().getAccessToken());
-     	   request.getSession().setAttribute("userSession", oAuthToken);
+     	   request.getSession(true).setAttribute("userSession", oAuthToken);
      	  
      	   return UriComponentsBuilder.fromUriString("/main").build().toUriString();
         } else {
@@ -65,7 +65,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	    	
 				OAuthToken oAuthToken = new OAuthToken();
 				oAuthToken.setAccessToken(oidcUserPrincipal.getOidcUserInfo().getAccessToken());
-				request.getSession().setAttribute("userSession", oAuthToken);
+				request.getSession(true).setAttribute("userSession", oAuthToken);
 				 return UriComponentsBuilder.fromUriString("/main").build().toUriString();
         	}
         }

@@ -5,18 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import fivefinger.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import fivefinger.oauth2.handler.OAuth2AuthenticationSuccessHandler;
@@ -26,6 +32,7 @@ import fivefinger.oauth2.service.CustomOidcUserService;
 import fivefinger.oauth2.service.OAuth2UserPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,11 +41,15 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
 	@Value("${spring.security.oauth2.client.registration.komsco.client-id}")
 	private String clientId;
 	@Value("${spring.security.oauth2.client.registration.komsco.client-secret}")
 	private String clientSecret;
 	
+	@Autowired
+	private RestTemplate restTemplate;
+
 	// 커스텀한 OAuth2UserService DI.
 	@Autowired
 	private CustomOAuth2UserService customOAuth2UserService;
@@ -80,7 +91,6 @@ public class SecurityConfig {
 		http.logout(configurer -> { // 📌 추가
 			configurer.logoutUrl("/logout");
 			configurer.addLogoutHandler(new CustomLogoutHandler());
-			configurer.invalidateHttpSession(true);
 			configurer.logoutSuccessUrl("/").permitAll(); // 로그아웃에 대해서 성공하면 "/"로 이동
 		});
 
@@ -108,14 +118,18 @@ public class SecurityConfig {
 		@Override
 		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 			try {
-				log.debug("LogoutHandler==>");
-				request.getSession().removeAttribute("userSession");
-				request.getSession().invalidate();
 				Object principal = authentication.getPrincipal();
 		        if (principal instanceof OAuth2UserPrincipal) {
-		        	revokeToken(((OAuth2UserPrincipal) principal).getOAuth2UserInfo().getAccessToken());
-		        	
+		        	revokeToken1(((OAuth2UserPrincipal) principal).getOAuth2UserInfo().getAccessToken());
 		        }
+		        
+				Assert.notNull(request, "HttpServletRequest required");
+				HttpSession session = request.getSession(false);
+				session.removeAttribute("userSession");
+				if (session != null) {
+		             session.invalidate();
+		        }
+				SecurityContextHolder.clearContext();
 			} catch (Exception e) {
 				log.error("error", e);
 				e.printStackTrace();
@@ -123,40 +137,18 @@ public class SecurityConfig {
 				
 		}
 		
-//		private void revokeToken(String accessToken) {
-//	      MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//	      params.add("token_type_hint", "access_token");
-//	      params.add("client_id", clientId);
-//	      params.add("client_secret", clientSecret);
-//	      params.add("token", accessToken);
-//	
-//	      HttpHeaders headers = new HttpHeaders();
-//	      headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//	
-//	      HttpEntity<?> entity = new HttpEntity<>(params, headers);
-//	      restTemplate.exchange("http://auth.5finger.co.kr:9000/oauth2/revoke", HttpMethod.POST, entity, Void.class);
-//	  }
-		
-		
-		private void revokeToken(String accessToken) {
-	        LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-
-	        map.add("token_type_hint", "access_token");
-	        map.add("token", accessToken);
-	        map.add("client_id", clientId);
-	        map.add("client_secret", clientSecret);
-
-	        WebClient revokeTokenWebClient = WebClient.builder()
-	                .baseUrl("http://auth.5finger.co.kr:9000/oauth2/revoke").build();
-
-	        revokeTokenWebClient
-	                .post()
-	                .body(BodyInserters.fromMultipartData(map))
-	                .retrieve()
-	                .bodyToMono(String.class)
-	                .block();
-
-	        return;
-	    }	
+		private void revokeToken1(String accessToken) {
+	      MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+	      params.add("token_type_hint", "access_token");
+	      params.add("client_id", clientId);
+	      params.add("client_secret", clientSecret);
+	      params.add("token", accessToken);
+	
+	      HttpHeaders headers = new HttpHeaders();
+	      headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+	
+	      HttpEntity<?> entity = new HttpEntity<>(params, headers);
+	      restTemplate.exchange("http://auth.5finger.co.kr:9000/oauth2/revoke", HttpMethod.POST, entity, Void.class);
+	  }
 	}
 }
