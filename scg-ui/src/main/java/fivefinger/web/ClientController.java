@@ -18,7 +18,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import fivefinger.model.Greeting;
 import fivefinger.oauth2.core.token.OAuthToken;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class ClientController {
 
@@ -123,6 +125,7 @@ public class ClientController {
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 	    OAuthToken token = (OAuthToken)session.getAttribute("userSession");
+	    log.debug(token.getAccessToken());
 	    headers.add("Authorization","Bearer "+ token.getAccessToken());
 	    return headers;
 	}
