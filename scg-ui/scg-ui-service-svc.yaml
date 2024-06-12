@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: scg-ui
+  labels:
+    app: scg-ui
+spec:
+  selector:
+    app: scg-ui
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9002

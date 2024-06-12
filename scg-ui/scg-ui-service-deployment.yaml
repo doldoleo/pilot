@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scg-ui
+  namespace: pilot
+  labels:
+    app: scg-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scg-ui
+  template:
+    metadata:
+      labels:
+        app: scg-ui
+    spec:
+      containers:
+      - name: scg-ui
+        image: doldoleo/scg-ui:latest
+        ports:
+        - containerPort: 9002
