@@ -117,6 +117,7 @@ public class SecurityConfig {
 		        	
 		        }
 			} catch (Exception e) {
+				log.error("error", e);
 				e.printStackTrace();
 			}	
 				
