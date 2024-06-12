@@ -1,9 +1,9 @@
-package com.example.demo.api.service.impl;
+package com.example.demo.payment.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.api.service.PaymentService;
+import com.example.demo.payment.service.PaymentService;
 
 import lombok.extern.slf4j.Slf4j;
 

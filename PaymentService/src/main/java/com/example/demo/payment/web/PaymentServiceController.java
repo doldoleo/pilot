@@ -1,4 +1,4 @@
-package com.example.demo.api.web;
+package com.example.demo.payment.web;
 
 
 
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.api.service.PaymentService;
+import com.example.demo.payment.service.PaymentService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
