@@ -146,7 +146,7 @@ public class SecurityConfig {
 	        map.add("client_secret", clientSecret);
 
 	        WebClient revokeTokenWebClient = WebClient.builder()
-	                .baseUrl("http://localhost:9000/oauth2/revoke").build();
+	                .baseUrl("http://auth.5finger.co.kr:9000/oauth2/revoke").build();
 
 	        revokeTokenWebClient
 	                .post()
