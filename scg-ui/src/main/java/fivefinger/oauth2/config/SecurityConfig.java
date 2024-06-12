@@ -111,6 +111,7 @@ public class SecurityConfig {
 		@Override
 		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 			try {
+				request.getSession().invalidate();
 				Object principal = authentication.getPrincipal();
 		        if (principal instanceof OAuth2UserPrincipal) {
 		        	revokeToken(((OAuth2UserPrincipal) principal).getOAuth2UserInfo().getAccessToken());
