@@ -5,10 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -19,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import fivefinger.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import fivefinger.oauth2.handler.OAuth2AuthenticationSuccessHandler;
@@ -36,8 +32,8 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	@Autowired
-	private RestTemplate restTemplate;
+//	@Autowired
+//	private RestTemplate restTemplate;
 
 	
 	@Value("${spring.security.oauth2.client.registration.komsco.client-id}")
@@ -126,19 +122,40 @@ public class SecurityConfig {
 				
 		}
 		
-		private void revokeToken(String accessToken) {
-	      MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	      params.add("token_type_hint", "access_token");
-	      params.add("client_id", clientId);
-	      params.add("client_secret", clientSecret);
-	      params.add("token", accessToken);
-	
-	      HttpHeaders headers = new HttpHeaders();
-	      headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-	
-	      HttpEntity<?> entity = new HttpEntity<>(params, headers);
-	      restTemplate.exchange("http://auth.5finger.co.kr:9000/oauth2/revoke", HttpMethod.POST, entity, Void.class);
-	  }
+//		private void revokeToken(String accessToken) {
+//	      MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+//	      params.add("token_type_hint", "access_token");
+//	      params.add("client_id", clientId);
+//	      params.add("client_secret", clientSecret);
+//	      params.add("token", accessToken);
+//	
+//	      HttpHeaders headers = new HttpHeaders();
+//	      headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//	
+//	      HttpEntity<?> entity = new HttpEntity<>(params, headers);
+//	      restTemplate.exchange("http://auth.5finger.co.kr:9000/oauth2/revoke", HttpMethod.POST, entity, Void.class);
+//	  }
 		
+		
+		private void revokeToken(String accessToken) {
+	        LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+
+	        map.add("token_type_hint", "access_token");
+	        map.add("token", accessToken);
+	        map.add("client_id", clientId);
+	        map.add("client_secret", clientSecret);
+
+	        WebClient revokeTokenWebClient = WebClient.builder()
+	                .baseUrl("http://localhost:9000/oauth2/revoke").build();
+
+	        revokeTokenWebClient
+	                .post()
+	                .body(BodyInserters.fromMultipartData(map))
+	                .retrieve()
+	                .bodyToMono(String.class)
+	                .block();
+
+	        return;
+	    }	
 	}
 }
