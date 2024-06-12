@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default-layout}">
+
+<!-- Content -->
+<div layout:fragment="content">
+<h1>지급결재 서비스 호출결과</h1>
+<div>
+	<span th:text="${result}"></span>
+</div>
+
+<br>
+<br>
+<p><br></p>
+<p><a href="/">메인으로</a></p>
+</div>
+</html>

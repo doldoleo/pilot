@@ -1,0 +1,23 @@
+spring:
+   security:
+      oauth2:
+         client:
+            registration:
+               komsco:
+                 client-id : "scg_local"
+                 client-secret : "1234"
+                 client-name : komsco
+                 authorization-grant-type : authorization_code
+                 redirect-uri : "http://auth.5finger.co.kr:9002/login/oauth2/code/komsco"
+                 client-authentication-method: client_secret_post
+                 scope : 
+                    - profile
+            provider: 
+               komsco: # 조폐공사 Provider 등록!
+                  authorization-uri: http://localhost:9000/oauth2/authorize
+                  token-uri: http://auth.5finger.co.kr:9000/oauth2/token
+                  issuer-uri: http://auth.5finger.co.kr:9000
+                  user-info-uri: http://auth.5finger.co.kr:9001/api/v1/profile/me
+                  user-name-attribute: sub
+                  #user-info-authentication-method: form #header, form, query 값이 있으며 기본 값은 header. form 일 경우 POST로 요청하고, 그 외의 값일 경우 GET.
+                                                        #POST로 요청 할 경우 바디에 엑세스 토큰을 담아서 보내고, GET으로 요청 할 경우 헤더에 액세스 토큰을 담아서 요청                  

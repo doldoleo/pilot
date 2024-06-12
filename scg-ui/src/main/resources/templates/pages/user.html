@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default-layout}">
+
+<!-- Content -->
+<div layout:fragment="content">
+<h1>사용자 서비스 호출결과</h1>
+<div>
+	<span>ID : </span>
+	<span th:text="${greeting.id}"></span>
+</div>
+<div>
+	<span>이름 : </span>
+	<span th:text="${greeting.name}"></span>
+</div>
+<br>
+<br>
+<p><br></p>
+<p><a href="/">메인으로</a></p>
+</div>
+</html>

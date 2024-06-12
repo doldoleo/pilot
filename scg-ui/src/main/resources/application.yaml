@@ -1,0 +1,53 @@
+server:
+  port: 9002
+  
+spring:
+  application:
+     name: scg-ui
+  
+  # yaml/yml 파일 - Thymeleaf 설정
+  thymeleaf:
+    cache: false
+    check-template-location: true #파일의 존재 여부 확인
+    prefix: classpath:/templates/ #파일의 시작위치
+    suffix: .html #파일의 확장자명
+    enabled: true   
+    #view-names: /pages/*  
+  web:
+     resources:
+        static-locations: classpath:/static/  
+   
+  profiles:
+    include: oauth
+    
+  datasource:
+    url: jdbc:mysql://192.168.0.103:33306/pilot
+    username: doldoldol
+    password: qwer1234
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        use_sql_comments: true 
+        
+        
+           
+api:
+  gateway:
+     url: http://192.168.0.101:31999/scg
+ 
+logging:
+  level:
+    root: INFO
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace  
+        SQL: debug   
+        orm.jdbc.bind: TRACE
+        orm.jdbc.extract: TRACE
+    
