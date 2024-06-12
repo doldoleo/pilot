@@ -22,4 +22,4 @@ spring:
     
 api:
   gateway:
-     url: http://192.168.0.101:31999/scg
+     url: http://gateway.5finger.co.kr:30060
