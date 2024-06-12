@@ -14,7 +14,7 @@ spring:
                     - profile
             provider: 
                komsco: # 조폐공사 Provider 등록!
-                  authorization-uri: http://localhost:9000/oauth2/authorize
+                  authorization-uri: http://auth.5finger.co.kr:9000/oauth2/authorize
                   token-uri: http://auth.5finger.co.kr:9000/oauth2/token
                   issuer-uri: http://auth.5finger.co.kr:9000
                   user-info-uri: http://auth.5finger.co.kr:9001/api/v1/profile/me
