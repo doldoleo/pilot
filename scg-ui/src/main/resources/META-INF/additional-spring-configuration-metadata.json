@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "scg.config.gateway_uri",
+    "type": "java.lang.String",
+    "description": "A description for 'scg.config.gateway_uri'"
+  },
+  {
+    "name": "scg.config.oauth2_revoke_uri",
+    "type": "java.lang.String",
+    "description": "A description for 'scg.config.oauth2_revoke_uri'"
+  }
+]}

@@ -38,7 +38,7 @@
 
     <!-- 로컬에서는 로그를 전송하지 않도록 설정 -->
     <springProfile name="local">
-        <root level="INFO">
+        <root level="DEBUG">
             <appender-ref ref="STDOUT" />
         </root>
         <logger name="fivefinger" level="DEBUG" additivity="false">
