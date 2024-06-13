@@ -22,9 +22,6 @@ public class CustomLogoutHandler implements LogoutHandler {
 	@Autowired
 	private LogoutService logoutService;
 
-	@Autowired
-	private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 		try {
@@ -47,7 +44,6 @@ public class CustomLogoutHandler implements LogoutHandler {
 			CookieUtils.deleteCookie(request, response, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME);
 			CookieUtils.deleteCookie(request, response, "JSESSIONID");
 			
-			httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequest(request, response);
 		} catch (Exception e) {
 			log.error("error", e);
 		}	
