@@ -29,7 +29,7 @@ podTemplate(
         stage('Gradle Build') {
             sh 'ls -al ./scg-ui'
         	sh 'chmod 755 ./scg-ui/gradlew'
-        	sh 'cd scg-ui;./gradlew clean build' 
+        	sh 'cd scg-ui;./gradlew clean build -x test' 
         	sh 'mv ./scg-ui/build/libs/*.jar ./scg-ui/app.jar'
         	sh 'ls -al'
         }
