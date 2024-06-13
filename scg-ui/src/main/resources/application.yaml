@@ -4,7 +4,6 @@ server:
 spring:
   application:
      name: scg-ui
-  
   # yaml/yml 파일 - Thymeleaf 설정
   thymeleaf:
     cache: false
@@ -18,10 +17,67 @@ spring:
         static-locations: classpath:/static/  
    
   profiles:
+    active: local
     include: oauth
     
 scg:
   config:
      gateway_uri: http://gateway.5finger.co.kr:30060
      oauth2_revoke_uri: http://auth.5finger.co.kr:9000/oauth2/delete
-  
+
+---
+spring:
+   config:
+     activate:
+        on-profile: local
+   security:
+      oauth2:
+         client:
+            registration:
+               komsco:
+                 client-id : "scg_local"
+                 client-secret : "1234"
+                 client-name : komsco
+                 authorization-grant-type : authorization_code
+                 redirect-uri : "http://localhost:9002/login/oauth2/code/komsco"
+                 client-authentication-method: client_secret_post
+                 scope : 
+                    - openid
+                    
+---
+spring:
+   config:
+     activate:
+        on-profile: dev
+   security:
+      oauth2:
+         client:
+            registration:
+               komsco:
+                 client-id : "scg_dev"
+                 client-secret : "1234"
+                 client-name : komsco
+                 authorization-grant-type : authorization_code
+                 redirect-uri : "http://demo.5finger.co.kr:9002/login/oauth2/code/komsco"
+                 client-authentication-method: client_secret_post
+                 scope : 
+                    - profile  
+                                          
+---
+spring:
+   config:
+     activate:
+        on-profile: cloud
+   security:
+      oauth2:
+         client:
+            registration:
+               komsco:
+                 client-id : "scg_cloud"
+                 client-secret : "1234"
+                 client-name : komsco
+                 authorization-grant-type : authorization_code
+                 redirect-uri : "http://demo.5finger.co.kr:32014/login/oauth2/code/komsco"
+                 client-authentication-method: client_secret_post
+                 scope : 
+                    - profile                                          

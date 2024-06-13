@@ -1,5 +1,5 @@
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY ./scg-ui/app.jar ./
-ENV spring.profiles.active dev
+ENV spring.profiles.active cloud
 CMD ["java", "-jar", "app.jar"]
