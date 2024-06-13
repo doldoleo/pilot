@@ -15,17 +15,17 @@ public class IndexController {
 		return "index";
 	}
 	
-	@GetMapping("/main")
-	public String main(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession(false);
-		if (session != null ) {
-			OAuthToken token = (OAuthToken)session.getAttribute("userSession");
-			if (token != null ) {
-				return "pages/main";
-			}
-		}
-		return "/";
-		
-	}
+//	@GetMapping("/main")
+//	public String main(HttpServletRequest request, HttpServletResponse response) {
+//		HttpSession session = request.getSession(false);
+//		if (session != null ) {
+//			OAuthToken token = (OAuthToken)session.getAttribute("userSession");
+//			if (token != null ) {
+//				return "pages/main";
+//			}
+//		}
+//		return "/";
+//		
+//	}
 	
 }

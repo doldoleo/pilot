@@ -25,7 +25,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-    	String targetUrl = "/main";
+    	String targetUrl = "/";
     	
 		Object principal = authentication.getPrincipal();
 		if (principal instanceof OAuth2UserPrincipal) {

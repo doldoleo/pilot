@@ -30,7 +30,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 			HttpSession session = request.getSession(false);
 			
 			// 1. delete access token
-			logoutService.revokeToken2(session);
+			logoutService.revokeToken(session);
 			
 			session.removeAttribute("userSession");
 			if (session != null) {
