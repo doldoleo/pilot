@@ -2,7 +2,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY ./spring-cloud-gateway/app.jar ./
 
-ENV spring.config.import configserver:http://192.168.0.101:10000
+ENV spring.config.import configserver:http://config-server-with-kafka.pilot
 ENV spring.config.name spring-cloud-gateway
 ENV spring.profiles.active dev
 
