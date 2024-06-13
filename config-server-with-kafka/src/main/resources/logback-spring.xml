@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration>
+	 <!-- 변수 지정 -->
+    <property name="LOG_DIR" value="./logs" />
+    <property name="LOG_FILE_NAME" value="${LOG_DIR}/app.log" />
+	<property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta(%-4relative) - [%thread{10}] %cyan(%logger{39}): %msg%n" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <!--  
+            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %-40.40logger{39} - %msg%n</Pattern>
+            -->
+        </encoder>
+    </appender>
+    
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     	<file>${LOG_FILE_NAME}</file> <!-- 파일을 저장할 경로를 정한다 -->
+     	
+     	<!--  레벨별 필터링이 필요없을 경우 filter class 관련된 부분을 삭제하면 됨 
+    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+      		<level>INFO</level>
+      		<onMatch>ACCEPT</onMatch>     해당 레벨만 기록한다.
+      		<onMismatch>DENY</onMismatch> 다른 수준의 레벨은 기록하지 않는다.(상위 레벨도 기록 안함), 상위 수준의 레벨에 대한 기록을 원하면 ACCEPT 로 하면 기록된다.
+    	</filter> 
+            -->
+    
+    	<encoder>
+      		<pattern>${LOG_PATTERN}</pattern> <!-- 해당 패턴 네이밍으로 현재 로그가 기록됨 -->
+   		</encoder>
+    
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	      <fileNamePattern>${LOG_DIR}/app-%d{yyyy-MM-dd}.%i.log</fileNamePattern> <!-- 해당 패턴 네이밍으로 이전 파일이 기록됨 -->
+	      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	        <maxFileSize>100MB</maxFileSize> <!-- 한 파일의 최대 용량 -->
+	      </timeBasedFileNamingAndTriggeringPolicy>
+	      <maxHistory>60</maxHistory> <!-- 한 파일의 최대 저장 기한 -->
+	    </rollingPolicy>
+   </appender>
+	  
+    <!-- 로컬에서는 로그를 전송하지 않도록 설정 -->
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+        <logger name="org.springframework.cloud" level="DEBUG" additivity="false" >
+        	<appender-ref ref="STDOUT" />
+        </logger>
+        
+        <logger name="fivefinger" level="DEBUG" additivity="false" >
+        	<appender-ref ref="STDOUT" />
+        </logger>
+    </springProfile>
+  
+	<springProfile name="!local">
+		<root level="INFO">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="FILE" />
+        </root>
+        <logger name="com.example.demo" level="DEBUG" additivity="false" >
+        	<appender-ref ref="STDOUT" />
+        	<appender-ref ref="FILE" />
+        </logger>
+    </springProfile>
+</configuration>

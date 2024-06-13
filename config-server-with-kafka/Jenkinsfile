@@ -1,0 +1,47 @@
+podTemplate(
+   label: "docker-build", 
+    name: "jenkins-slave",
+    serviceAccount: "jenkins",
+   
+    containers: [
+        containerTemplate(name: "docker", image: "docker", ttyEnabled: true, command: 'cat')
+    ],
+    volumes: [
+        hostPathVolume(mountPath: "/var/run/docker.sock", hostPath: "/var/run/docker.sock")
+    ]
+) {
+    node('docker-build') {
+        def now = java.time.LocalDateTime.now()
+        def projectId = "config-server-with-kafka" // 프로젝트 아이디
+
+        // docker
+        def dockerhubCredentialsId = "DOCKER_HUB" // 젠킨스 도커허브 자격증명
+        def dockerImage = "doldoleo/${projectId}" // 도커허브 이미지
+        def dockerImageTag = "latest" // 도커허브 이미지 태그
+
+        stage('checkout'){
+            container('git'){
+                checkout scm
+            }
+        }
+        
+        stage('Gradle Build') {
+            sh 'ls -al ./config-server-with-kafka'
+        	sh 'chmod 755 ./config-server-with-kafka/gradlew'
+        	sh 'cd config-server-with-kafka;./gradlew clean build' 
+        	sh 'mv ./config-server-with-kafka/build/libs/*.jar ./config-server-with-kafka/app.jar'
+        	sh 'ls -al'
+        }
+    
+        stage("docker") {
+            container("docker") {
+                withCredentials([usernamePassword(credentialsId: "${dockerhubCredentialsId}", passwordVariable: "password", usernameVariable: "username")]) {
+                    sh "docker login -u $username -p $password"
+                    sh "docker build -f ./config-server-with-kafka/DockerfileK8s -t ${dockerImage}:${dockerImageTag} ./"
+                    sh "docker push ${dockerImage}:${dockerImageTag}"
+                }
+            }
+        }
+        
+    }
+}

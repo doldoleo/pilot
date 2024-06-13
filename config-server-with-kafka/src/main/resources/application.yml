@@ -1,0 +1,88 @@
+server:
+   port: 10000
+   
+spring:
+  application:
+      name: config-server-with-kafka
+      
+  profiles:
+    active: local
+
+  cloud:
+     bus:
+       enabled: true # 기본값: true # Bus로 설정변경 새로고침 활성화
+       refresh: # busrefresh EndPoint 활성화 호출시 전체 Config Bus Client 들에게 메세지 전송
+         enabled: true
+       env:
+         enabled: true          
+  kafka:
+    bootstrap-servers: 192.168.0.101:29092 # kafka 서버 주소:포트
+
+management:
+  info:
+    env:
+      enabled: true
+  endpoint:  #만약 건강 지표의 상세 내역을 보려면 속성 정보
+     health:
+         show-details: always #never/always
+     shutdown:
+         enabled: true
+      
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh,beans,httptrace,busrefresh
+ 
+---
+spring:
+  config:
+     activate:  
+        on-profile: local
+  cloud:
+     bus:
+       destination: gateway.config.topic.local
+     config:
+       enabled: false  #config server에서 구동시 설정가져오기 마!!!     
+       server:
+          accept-empty: false
+          native:
+            searchLocations: "file:///${user.home}/config-repo"
+            addLabelLocations: false
+          git:
+            uri: https://github.com/doldoleo/pilot
+            clone-on-start: true
+            force-pull: true
+            search-paths:
+              - spring-cloud-gateway/**/resources
+              #- '*/**'
+            default-label: master
+            username: doldoleo
+            password: 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
+            basedir: D:/kafka/git/repo
+            timeout: 5 #5초
+---
+spring:
+  config:
+     activate:
+        on-profile: dev
+  cloud:
+     bus:
+        destination: gateway.config.topic.dev
+     config:
+       enabled: false  #config server에서 구동시 설정가져오기 마!!!     
+       server:
+          accept-empty: false
+          native:
+            searchLocations: "file:/home/wasadmin/config-kafka/config-server/config-repo"
+            addLabelLocations: false
+          git:
+            uri: https://github.com/doldoleo/pilot
+            clone-on-start: true
+            force-pull: true
+            search-paths: 
+              - spring-cloud-gateway/**/resources
+            default-label: master
+            username: doldoleo
+            password: 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
+            basedir: /home/wasadmin/config-kafka/config-server/git/repo
+            timeout: 5 #5초

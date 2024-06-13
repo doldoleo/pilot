@@ -1,0 +1,7 @@
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY ./config-server-with-kafka/app.jar ./
+
+ENV spring.profiles.active dev
+
+CMD ["java", "-jar", "app.jar"]
