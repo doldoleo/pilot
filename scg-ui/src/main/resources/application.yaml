@@ -23,5 +23,5 @@ spring:
 scg:
   config:
      gateway_uri: http://gateway.5finger.co.kr:30060
-     oauth2_revoke_uri: http://auth.5finger.co.kr:9000/oauth2/revoke
+     oauth2_revoke_uri: http://auth.5finger.co.kr:9000/oauth2/delete
   
