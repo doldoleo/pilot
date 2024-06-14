@@ -35,35 +35,30 @@ public class ClientController {
 
 	@GetMapping("/payment")
 	public String payment(Model model, HttpSession session) {
+		log.debug("gateway url=>{}", siteUrlProperties.getGateway_uri());
+		
 		HttpHeaders headers = getHeaders(session);
-	    HttpEntity<Object> request = new HttpEntity<Object>(headers);
-		URI uri = UriComponentsBuilder
-				.fromUriString(siteUrlProperties.getGateway_uri())
-				.path("/api/v1/payment/check")
-				.encode()
-				.build()
-				.toUri();
+		HttpEntity<Object> request = new HttpEntity<Object>(headers);
+		URI uri = UriComponentsBuilder.fromUriString(siteUrlProperties.getGateway_uri()).path("/api/v1/payment/check")
+				.encode().build().toUri();
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(uri,  HttpMethod.GET, request, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
 
 		String res = responseEntity.getBody();
 		model.addAttribute("result", res);
 
 		return "pages/payment";
-}
+	}
 
 	@GetMapping("/user/greeting")
 	public String greeting(Model model, HttpSession session) {
+		log.debug("gateway url=>{}", siteUrlProperties.getGateway_uri());
+		
 		HttpHeaders headers = getHeaders(session);
 		HttpEntity<Greeting> request = new HttpEntity<Greeting>(headers);
-		
-		URI uri = UriComponentsBuilder
-					.fromUriString(siteUrlProperties.getGateway_uri())
-					.path("/api/v1/user/greeting")
-				    .queryParam("name", "Gil-Dong")
-				    .encode()
-				    .build()
-				    .toUri();
+
+		URI uri = UriComponentsBuilder.fromUriString(siteUrlProperties.getGateway_uri()).path("/api/v1/user/greeting")
+				.queryParam("name", "Gil-Dong").encode().build().toUri();
 
 		ResponseEntity<Greeting> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, request, Greeting.class);
 		Greeting greeting = responseEntity.getBody();
@@ -71,21 +66,18 @@ public class ClientController {
 
 		return "pages/user";
 	}
-	
+
 	@GetMapping("/user/nogreeting")
 	public String nogreeting(Model model, HttpSession session) {
+		log.debug("gateway url=>{}", siteUrlProperties.getGateway_uri());
+		
 		HttpHeaders headers = getHeaders(session);
 		HttpEntity<Greeting> request = new HttpEntity<Greeting>(headers);
 
-		URI uri = UriComponentsBuilder
-					.fromUriString(siteUrlProperties.getGateway_uri())
-					.path("/api/v1/user/nogreeting")
-					.queryParam("name", "Gil-Dong")
-					.encode()
-					.build()
-					.toUri();
+		URI uri = UriComponentsBuilder.fromUriString(siteUrlProperties.getGateway_uri()).path("/api/v1/user/nogreeting")
+				.queryParam("name", "Gil-Dong").encode().build().toUri();
 
-		ResponseEntity<Greeting> responseEntity = restTemplate.exchange(uri,  HttpMethod.GET, request, Greeting.class);
+		ResponseEntity<Greeting> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, request, Greeting.class);
 		Greeting greeting = responseEntity.getBody();
 		model.addAttribute("greeting", greeting);
 
@@ -94,44 +86,43 @@ public class ClientController {
 
 	@GetMapping("/merge")
 	public String merge(Model model, HttpSession session) {
+		log.debug("gateway url=>{}", siteUrlProperties.getGateway_uri());
+		
 		HttpHeaders headers = getHeaders(session);
 		HttpEntity<Greeting> request = new HttpEntity<Greeting>(headers);
-		
-		URI uri = UriComponentsBuilder
-				.fromUriString(siteUrlProperties.getGateway_uri())
-				.path("/api/v1/merge/call")
-				.encode()
-				.build()
-				.toUri();
 
-		ResponseEntity<Greeting> responseEntity = restTemplate.exchange(uri,  HttpMethod.GET, request, Greeting.class);
+		URI uri = UriComponentsBuilder.fromUriString(siteUrlProperties.getGateway_uri()).path("/api/v1/merge/call")
+				.encode().build().toUri();
+
+		ResponseEntity<Greeting> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, request, Greeting.class);
 		Greeting greeting = responseEntity.getBody();
 		model.addAttribute("greeting", greeting);
 
 		return "pages/merge";
 	}
-	
+
 	@GetMapping("/loginInfo")
-    public String getJson(Authentication authentication) {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+	public String getJson(Authentication authentication) {
+		OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-        Map<String, Object> attributes = oAuth2User.getAttributes();
+		Map<String, Object> attributes = oAuth2User.getAttributes();
 
-        return attributes.toString();
-    }
-	
+		return attributes.toString();
+	}
+
 	/**
 	 * 토큰가져오기
+	 * 
 	 * @param session
 	 * @return
 	 */
 	private HttpHeaders getHeaders(HttpSession session) {
 		// 헤더 설정
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-	    OAuthToken token = (OAuthToken)session.getAttribute("userSession");
-	    log.debug(token.getAccessToken());
-	    headers.add("Authorization","Bearer "+ token.getAccessToken());
-	    return headers;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		OAuthToken token = (OAuthToken) session.getAttribute("userSession");
+		log.debug(token.getAccessToken());
+		headers.add("Authorization", "Bearer " + token.getAccessToken());
+		return headers;
 	}
 }
