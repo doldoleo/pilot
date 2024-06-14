@@ -22,7 +22,6 @@ spring:
     
 scg:
   config:
-     gateway_uri: http://gateway.5finger.co.kr:30060
      oauth2_revoke_uri: http://auth.5finger.co.kr:9000/oauth2/delete
 
 ---
@@ -43,6 +42,9 @@ spring:
                  client-authentication-method: client_secret_post
                  scope : 
                     - openid
+scg:
+  config:
+     gateway_uri: http://gateway.5finger.co.kr:30060
                     
 ---
 spring:
@@ -62,6 +64,9 @@ spring:
                  client-authentication-method: client_secret_post
                  scope : 
                     - profile  
+scg:
+  config:
+     gateway_uri: http://gateway.5finger.co.kr:30060
                                           
 ---
 spring:
@@ -80,4 +85,8 @@ spring:
                  redirect-uri : "http://demo.5finger.co.kr:32014/login/oauth2/code/komsco"
                  client-authentication-method: client_secret_post
                  scope : 
-                    - profile                                          
+                    - profile
+scg:
+  config:
+     gateway_uri: http://scg.pilot
+                                                              
