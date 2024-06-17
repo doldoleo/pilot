@@ -30,7 +30,7 @@ spring:
       request-read-timeout: 5000 #config server 요청 시 사용하는 read timeout 값입니다.
 
     bus:
-        destination: gateway.config.topic.dev
+        destination: gateway.config.topic.local
 
     #gateway setting    
     gateway:
