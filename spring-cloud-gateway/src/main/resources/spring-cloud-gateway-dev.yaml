@@ -9,6 +9,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://auth.5finger.co.kr:9000
+
+  kafka:
+    bootstrap-servers: 192.168.0.101:32100 # kafka 서버 주소:포트
   
   cloud:
     #spring cloud config 설정   
@@ -38,6 +41,15 @@ spring:
             preLogger : true
             postLogger : true
       routes: #라우팅 규칙 목록 설정
+        - id : payment-service
+          uri:  http://payment-service.pilot # 
+          predicates:
+            - Path=/api/v1/payment/**
+            - Method=GET,POST,PUT,DELETE,OPTIONS
+          filters:
+            - AddRequestHeader=first-request, first-request-header2 #요청 헤더 추가 필터 적용
+            - AddResponseHeader=first-response, first-response-header2 #응답 헤더 추가 필터 적용
+            - CustomFilter 
         - id : user-service
           uri: http://user-service.pilot 
           predicates:
