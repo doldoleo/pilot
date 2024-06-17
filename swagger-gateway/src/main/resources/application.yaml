@@ -22,7 +22,6 @@ spring:
         enabled: true
       env:
         enabled: true
-      destination: gateway.config.topic.dev        
 
 management:
   endpoints:
