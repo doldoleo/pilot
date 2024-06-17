@@ -2,7 +2,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY ./swagger-gateway/app.jar ./
 
-ENV spring.config.import configserver:http://config-server-with-kafka.pilot
+ENV spring.config.import optional:configserver:http://config-server-with-kafka.pilot
 ENV spring.config.name swagger-gateway
 ENV spring.profiles.active dev
 
