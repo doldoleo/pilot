@@ -47,7 +47,7 @@ springdoc:
        - url: /api-docs/user
          name: 회원 서비스  
        - url: /api-docs/merge
-         name: 결합 서비스  
+         name: 복합 서비스  
     urls-primary-name: Gateway  
     
 ---
