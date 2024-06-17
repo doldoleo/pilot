@@ -12,7 +12,10 @@ spring:
 
   kafka:
     bootstrap-servers: 192.168.0.101:32100 # kafka 서버 주소:포트
-  
+    consumer:
+      bootstrap-servers: 192.168.0.101:32100
+      group-id: spring-cloud-gateway  
+      
   cloud:
     #spring cloud config 설정   
     config:
