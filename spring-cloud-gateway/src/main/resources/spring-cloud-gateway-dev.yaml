@@ -53,9 +53,3 @@ spring:
             - Path=/api/v1/user/**
           filters:
             - CustomFilter
-        - id : feign-service
-          uri: http://feign-service.pilot 
-          predicates:
-            - Path=/api/v1/merge/**
-          filters:
-            - CustomFilter            
