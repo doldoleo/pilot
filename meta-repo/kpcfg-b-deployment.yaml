@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kpcfg-b
-  namespace: su
+  namespace: ms-group6
   labels:
     app: kpcfg-b
 spec:

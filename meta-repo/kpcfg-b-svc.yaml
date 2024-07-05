@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kpcfg-b
-  namespace: su
+  namespace: ms-group6
   labels:
     app: kpcfg-b
 spec:
