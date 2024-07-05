@@ -20,3 +20,5 @@ spec:
         image: doldoleo/kpcfg-b:latest
         ports:
         - containerPort: 8077
+      nodeSelector:
+        key: pwn1
