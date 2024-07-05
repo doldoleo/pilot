@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kpcfg-b
+  namespace: su
+  labels:
+    app: kpcfg-b
+spec:
+  selector:
+    app: kpcfg-b
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8077
+      nodePort: 30777

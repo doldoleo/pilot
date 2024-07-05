@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kpcfg-b
+  namespace: su
+  labels:
+    app: kpcfg-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kpcfg-b
+  template:
+    metadata:
+      labels:
+        app: kpcfg-b
+    spec:
+      containers:
+      - name: kpcfg-b
+        image: doldoleo/kpcfg-b:latest
+        ports:
+        - containerPort: 8077
